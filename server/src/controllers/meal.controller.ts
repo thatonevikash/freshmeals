@@ -2,27 +2,14 @@ import type { Request, Response } from "express";
 
 // -------------------------------------------------------------
 
+// meal controllers
+// -------------------------------------------------------------
+
 export async function createMeal(req: Request, res: Response) {}
 
 // -------------------------------------------------------------
 
-export async function getMeals(req: Request, res: Response) {
-  return res.status(200).json([
-    { name: "Rice", price: 10 },
-    { name: "Pulse", price: 5 },
-    { name: "Mix-Veg", price: 6 },
-  ]);
-}
-
-// -------------------------------------------------------------
-
-export async function getMeal(req: Request, res: Response) {
-  const { name } = req.params;
-
-  if (!name) return res.status(404).send("Provide a valid meal name");
-
-  return res.json({ name, price: 8 }).status(200);
-}
+export async function getMeal(req: Request, res: Response) {}
 
 // -------------------------------------------------------------
 
@@ -31,3 +18,41 @@ export async function deleteMeal(req: Request, res: Response) {}
 // -------------------------------------------------------------
 
 export async function updateMeal(req: Request, res: Response) {}
+
+// -------------------------------------------------------------
+
+// plate controllers
+// -------------------------------------------------------------
+
+export async function createMealPlate(req: Request, res: Response) {}
+
+// -------------------------------------------------------------
+
+export async function getMealPlate(req: Request, res: Response) {}
+
+// -------------------------------------------------------------
+
+export async function deleteMealPlate(req: Request, res: Response) {}
+
+// -------------------------------------------------------------
+
+export async function updateMealPlate(req: Request, res: Response) {}
+
+// -------------------------------------------------------------
+
+// collection controllers
+// -------------------------------------------------------------
+
+export async function getRecentOrderedMeals(req: Request, res: Response) {}
+
+// -------------------------------------------------------------
+
+export async function getMostOrderedMeals(req: Request, res: Response) {}
+
+// -------------------------------------------------------------
+
+export async function getMostOrderedPlates(req: Request, res: Response) {}
+
+// -------------------------------------------------------------
+
+export async function orderMeal(req: Request, res: Response) {}

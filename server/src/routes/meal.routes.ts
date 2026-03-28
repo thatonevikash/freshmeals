@@ -1,20 +1,20 @@
 import { Router } from "express";
-import {
-  getMeal,
-  getMeals,
-  createMeal,
-  deleteMeal,
-  updateMeal,
-} from "../controllers/meal.controller";
+import * as Controller from "../controllers/meal.controller";
 
 // -------------------------------------------------------------
 
 const router = Router();
 
-router.get("/", getMeals);
-router.post("/", createMeal);
-router.get("/:name", getMeal);
-router.put("/:mealId", updateMeal);
-router.delete("/:mealId", deleteMeal);
+router.post("/order", Controller.orderMeal);
+
+router.get("/recent_ordered", Controller.getRecentOrderedMeals);
+
+router.get("/most_ordered/item", Controller.getMostOrderedMeals);
+
+router.get("/most_ordered/plate", Controller.getMostOrderedPlates);
+
+router.get("/plate/:plate_id", Controller.getMealPlate);
+
+router.get("/:meal_id", Controller.getMeal);
 
 export default router;

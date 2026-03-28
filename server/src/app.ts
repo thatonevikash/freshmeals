@@ -1,19 +1,19 @@
-import express from "express";
-import userRoutes from "./routes/user.routes";
-import mealRoutes from "./routes/meal.routes";
-import authRoutes from "./routes/auth.routes";
+import express, { type Application } from "express";
+import cors from "cors";
+
+import routes from "./routes/root";
 
 // -------------------------------------------------------------
 
-const app = express();
+const app: Application = express();
 
-// Middlewares
+app.use(cors());
 app.use(express.json());
 
-// Routes
-app.use("auth", authRoutes);
+// -------------------------------------------------------------
 
-app.use("/user", userRoutes);
-app.use("/meal", mealRoutes);
+app.get("/health", (_, res) => res.status(200).json({ message: "live" }));
+
+app.use("/api", routes);
 
 export { app };
