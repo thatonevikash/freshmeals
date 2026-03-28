@@ -1,6 +1,6 @@
 import express from "express";
-import userRoutes from "./routes/user.routes.js";
-import mealRoutes from "./routes/meal.routes.js";
+import userRoutes from "./routes/user.routes";
+import mealRoutes from "./routes/meal.routes";
 
 // -------------------------------------------------------------
 

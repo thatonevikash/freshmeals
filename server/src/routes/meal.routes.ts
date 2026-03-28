@@ -5,7 +5,7 @@ import {
   createMeal,
   deleteMeal,
   updateMeal,
-} from "../controllers/meal.controller.js";
+} from "../controllers/meal.controller";
 
 // -------------------------------------------------------------
 

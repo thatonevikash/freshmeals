@@ -1,5 +1,5 @@
-import { app } from "./app.js";
-import { ENV } from "./configs/env-variables.js";
+import { app } from "./app";
+import { ENV } from "./configs/env-variables";
 
 // -------------------------------------------------------------
 
