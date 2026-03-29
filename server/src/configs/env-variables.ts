@@ -19,4 +19,5 @@ function readENV(variable: string): string {
 export const ENV = {
   PORT: readENV("PORT"),
   MONGODB_URI: readENV("MONGODB_URI"),
+  JWT_SECRET: readENV("JWT_SECRET"),
 };

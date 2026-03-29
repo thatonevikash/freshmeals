@@ -5,7 +5,7 @@ import * as Auth from "../controllers/auth.controller";
 
 const router = Router();
 
-router.get("/login", Auth.login);
+router.post("/login", Auth.login);
 
 router.post("/signup", Auth.signup);
 

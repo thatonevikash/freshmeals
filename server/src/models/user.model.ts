@@ -1,11 +1,12 @@
 import mongoose, { Document, Schema } from "mongoose";
+import bcrypt from "bcryptjs";
 
 // -------------------------------------------------------------
 
 export interface IUser {
   username: string;
   email: string;
-  password?: string;
+  password: string;
   address?: string;
   mobile_no?: string;
   pincode?: number;
@@ -13,9 +14,9 @@ export interface IUser {
 
 export interface IUserDocument extends IUser, Document {
   _id: mongoose.Types.ObjectId;
-  id: string;
   createdAt: Date;
   updatedAt: Date;
+  comparePassword(password: string): Promise<boolean>;
 }
 
 // -------------------------------------------------------------
@@ -52,6 +53,17 @@ const UserSchema = new Schema<IUserDocument>(
     },
   },
 );
+
+// -------------------------------------------------------------
+
+UserSchema.pre("save", async function () {
+  if (!this.isModified("password")) return;
+  this.password = await bcrypt.hash(this.password, 10);
+});
+
+UserSchema.methods.comparePassword = async function (password: string) {
+  return await bcrypt.compare(password, this.password);
+};
 
 // -------------------------------------------------------------
 
