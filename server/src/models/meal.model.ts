@@ -5,7 +5,7 @@ import mongoose, { Document, Schema } from "mongoose";
 export interface IMeal {
   meal_name: string;
   meal_price: string;
-  meal_img_url: string;
+  meal_img_url?: string;
 }
 
 export interface IMealDocument extends IMeal, Document {

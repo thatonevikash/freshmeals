@@ -10,7 +10,7 @@ interface IMealItem {
 export interface IPlate {
   plate_name: string;
   plate_price: string;
-  plate_img_url: string;
+  plate_img_url?: string;
   plate_items: IMealItem[];
 }
 
