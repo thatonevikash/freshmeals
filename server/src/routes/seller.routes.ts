@@ -17,4 +17,10 @@ router.post("/plate", Controller.createSellerPlate);
 
 router.get("/collection", Controller.getSellerCollection);
 
+router.get("/meal/:meal_id", Controller.getSellerMeal);
+
+router.put("/meal/:meal_id", Controller.updateSellerMeal);
+
+router.delete("/meal/:meal_id", Controller.deleteSellerMeal);
+
 export default router;

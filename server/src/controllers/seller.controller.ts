@@ -81,6 +81,69 @@ export async function getSellerMeals(req: Request, res: Response) {
 
 // -------------------------------------------------------------
 
+export async function getSellerMeal(req: Request, res: Response) {
+  try {
+    const { meal_id } = req.params;
+
+    const meal = await Meal.findById(meal_id);
+
+    if (!meal) {
+      res.status(404).json({ message: "Meal not found!" });
+      return;
+    }
+
+    const isSeller =
+      meal.seller_information.seller_id.toString() === req.userId;
+
+    if (!isSeller) {
+      res.status(401).json({ message: "Unauthorized" });
+      return;
+    }
+
+    res.status(200).json({ data: meal });
+  } catch (error) {
+    res.status(500).json({ message: "Unable to fetch meal" });
+    throw error;
+  }
+}
+
+// -------------------------------------------------------------
+
+export async function updateSellerMeal(req: Request, res: Response) {
+  try {
+    const { meal_id } = req.params;
+    const updates = req.body;
+
+    const meal = await Meal.findByIdAndUpdate(
+      meal_id,
+      { ...updates },
+      { new: true },
+    );
+
+    res.status(200).json({ message: "Meal updated successfully", data: meal });
+  } catch (error) {
+    res.status(500).json({ message: "Unable to update meal" });
+    throw error;
+  }
+}
+
+// -------------------------------------------------------------
+
+export async function deleteSellerMeal(req: Request, res: Response) {
+  try {
+    const { meal_id } = req.params;
+
+    const meal = await Meal.findByIdAndDelete(meal_id);
+
+    res.status(200).json({ message: "Meal deleted successfully", data: meal });
+  } catch (error) {
+    res.status(500).json({ message: "Unable to delete meal" });
+    throw error;
+  }
+}
+
+// -------------------------------------------------------------
+
 export async function createSellerPlate(req: Request, res: Response) {}
 
 // -------------------------------------------------------------
