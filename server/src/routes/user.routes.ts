@@ -8,6 +8,8 @@ const router = Router();
 
 router.get("/", Controller.getUser);
 
-router.put("/:user_id/seller", Controller.updateUser);
+router.put("/seller/register", Controller.registerSeller);
+
+router.put("/seller/unregister", Controller.unregisterSeller);
 
 export default router;

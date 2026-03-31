@@ -1,5 +1,4 @@
 import mongoose, { Schema, Document } from "mongoose";
-import type { IMeal } from "./meal.model";
 
 // -------------------------------------------------------------
 
@@ -11,7 +10,7 @@ interface IMealItem {
 export interface IPlate {
   plate_name: string;
   plate_price: string;
-  plate_imgUrl: string;
+  plate_img_url: string;
   plate_items: IMealItem[];
 }
 
@@ -32,13 +31,8 @@ const PlateSchema = new Schema<IPlateDocument>(
       trim: true,
       lowercase: true,
     },
-    plate_price: {
-      type: String,
-      required: true,
-    },
-    plate_imgUrl: {
-      type: String,
-    },
+    plate_price: { type: String, required: true },
+    plate_img_url: { type: String },
     plate_items: [
       {
         meal_id: {

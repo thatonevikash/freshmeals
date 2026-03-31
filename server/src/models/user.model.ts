@@ -8,8 +8,10 @@ export interface IUser {
   email: string;
   password: string;
   address?: string;
-  mobile_no?: string;
   pincode?: number;
+  mobile_no?: string;
+  avatar_url?: string;
+  is_registered_seller?: boolean;
 }
 
 export interface IUserDocument extends IUser, Document {
@@ -37,8 +39,10 @@ const UserSchema = new Schema<IUserDocument>(
     },
     password: { type: String, required: true, select: false },
     address: { type: String },
-    mobile_no: { type: String },
     pincode: { type: Number },
+    mobile_no: { type: String },
+    avatar_url: { type: String },
+    is_registered_seller: { type: Boolean, default: false },
   },
   {
     timestamps: true,

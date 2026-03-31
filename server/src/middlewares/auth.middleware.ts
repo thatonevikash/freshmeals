@@ -19,7 +19,7 @@ export function isAuthenticated(
 
   try {
     const decoded = verifyToken(token) as { userId: string };
-    (req as any).userId = decoded.userId;
+    req.userId = decoded.userId;
     next();
   } catch {
     res.status(401).json({ message: "Invalid or expired token" });

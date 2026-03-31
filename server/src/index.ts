@@ -1,5 +1,6 @@
-import { app } from "./app";
 import { ENV } from "./configs/env-variables";
+
+import { app } from "./app";
 import { connectDB } from "./database";
 
 // -------------------------------------------------------------
