@@ -11,7 +11,7 @@ export interface IMeal extends ISellerInformation {
 
 export interface IMealDocument extends IMeal, Document {
   _id: mongoose.Types.ObjectId;
-  meal_id: String;
+  meal_id: string;
   createdAt: Date;
   updatedAt: Date;
 }

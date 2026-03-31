@@ -1,12 +1,15 @@
 import type { Request, Response } from "express";
 import { MealModel as Meal } from "../models/meal.model";
 import { UserModel as User } from "../models/user.model";
+import mongoose from "mongoose";
 
 // -------------------------------------------------------------
 
 export async function getAllSeller(req: Request, res: Response) {
   try {
-    const sellers = await User.find({ is_registered_seller: true });
+    const sellers = await User.find({ is_registered_seller: true }).select(
+      "id username avatar_url is_registered_seller",
+    );
 
     res.status(200).json({ data: sellers });
   } catch {
@@ -112,15 +115,35 @@ export async function getSellerMeal(req: Request, res: Response) {
 export async function updateSellerMeal(req: Request, res: Response) {
   try {
     const { meal_id } = req.params;
-    const updates = req.body;
+    const { meal_name, meal_price, meal_img_url } = req.body;
+    const updates = { meal_name, meal_price, meal_img_url };
 
-    const meal = await Meal.findByIdAndUpdate(
-      meal_id,
-      { ...updates },
-      { new: true },
-    );
+    const meal = await Meal.findById(meal_id);
 
-    res.status(200).json({ message: "Meal updated successfully", data: meal });
+    if (!meal) {
+      res.status(404).json({ message: "Meal not found!" });
+      return;
+    }
+
+    const isSeller =
+      meal.seller_information.seller_id.toString() === req.userId;
+
+    if (!isSeller) {
+      res.status(401).json({ message: "Unauthorized" });
+      return;
+    }
+
+    const updatedMeal = await Meal.findByIdAndUpdate(meal_id, updates, {
+      new: true,
+    });
+
+    if (!updatedMeal) {
+      res.status(404).json({ message: "Meal not found" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Meal updated successfully", data: updatedMeal });
   } catch (error) {
     res.status(500).json({ message: "Unable to update meal" });
     throw error;
@@ -133,9 +156,30 @@ export async function deleteSellerMeal(req: Request, res: Response) {
   try {
     const { meal_id } = req.params;
 
-    const meal = await Meal.findByIdAndDelete(meal_id);
+    const meal = await Meal.findById(meal_id);
 
-    res.status(200).json({ message: "Meal deleted successfully", data: meal });
+    if (!meal) {
+      res.status(404).json({ message: "Meal not found!" });
+      return;
+    }
+
+    const isSeller =
+      meal.seller_information.seller_id.toString() === req.userId;
+
+    if (!isSeller) {
+      res.status(401).json({ message: "Unauthorized" });
+      return;
+    }
+
+    const deletedMeal = await Meal.findByIdAndDelete(meal_id);
+
+    if (!deletedMeal) {
+      res.status(404).json({ message: "Meal not found" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Meal deleted successfully", data: deletedMeal });
   } catch (error) {
     res.status(500).json({ message: "Unable to delete meal" });
     throw error;
