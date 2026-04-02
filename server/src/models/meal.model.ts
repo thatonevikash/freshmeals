@@ -1,8 +1,9 @@
 import mongoose, { Document, Schema } from "mongoose";
+import type { ISellerInformation } from "./seller.model";
 
 // -------------------------------------------------------------
 
-export interface IMeal {
+export interface IMeal extends ISellerInformation {
   meal_name: string;
   meal_price: string;
   meal_img_url?: string;
@@ -10,7 +11,7 @@ export interface IMeal {
 
 export interface IMealDocument extends IMeal, Document {
   _id: mongoose.Types.ObjectId;
-  meal_id: String;
+  meal_id: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -31,6 +32,16 @@ const MealSchema = new Schema<IMealDocument>(
       required: [true, "price is required for meal"],
     },
     meal_img_url: { type: String },
+    seller_information: {
+      seller_name: { type: String, required: true },
+      seller_avatarUrl: { type: String },
+      seller_id: { type: Schema.Types.ObjectId, ref: "user", required: true },
+      seller_level: {
+        type: String,
+        enum: ["", "Beginner", "Intermediate", "Elite"],
+        default: "",
+      },
+    },
   },
   {
     timestamps: true,

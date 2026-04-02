@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
+import type { ISellerInformation } from "./seller.model";
 
 // -------------------------------------------------------------
 
@@ -7,7 +8,7 @@ interface IMealItem {
   meal_name: string;
 }
 
-export interface IPlate {
+export interface IPlate extends ISellerInformation {
   plate_name: string;
   plate_price: string;
   plate_img_url?: string;
@@ -35,14 +36,21 @@ const PlateSchema = new Schema<IPlateDocument>(
     plate_img_url: { type: String },
     plate_items: [
       {
-        meal_id: {
-          type: Schema.Types.ObjectId,
-          ref: "meal",
-          required: true,
-        },
+        _id: false,
+        meal_id: { type: Schema.Types.ObjectId, ref: "meal", required: true },
         meal_name: { type: String, required: true },
       },
     ],
+    seller_information: {
+      seller_name: { type: String, required: true },
+      seller_avatarUrl: { type: String },
+      seller_id: { type: Schema.Types.ObjectId, ref: "user", required: true },
+      seller_level: {
+        type: String,
+        enum: ["", "Beginner", "Intermediate", "Elite"],
+        default: "",
+      },
+    },
   },
   {
     timestamps: true,

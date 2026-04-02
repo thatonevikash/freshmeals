@@ -35,45 +35,44 @@ export async function login(req: Request, res: Response) {
 // -------------------------------------------------------------
 
 export async function signup(req: Request, res: Response) {
-  const { username, password, email, mobile_no, address, pincode } = req.body;
+  try {
+    const { username, password, email, mobile_no, address, pincode } = req.body;
 
-  if (
-    [username, password, email, mobile_no, address, pincode].some((f) => !f)
-  ) {
-    res.status(400).json({ message: "All fields are required!" });
+    if (
+      [username, password, email, mobile_no, address, pincode].some((f) => !f)
+    ) {
+      res.status(400).json({ message: "All fields are required!" });
+      return;
+    }
+
+    const existing = await User.findOne({ email });
+    if (existing) {
+      res.status(409).json({ message: "User exist with email" });
+      return;
+    }
+
+    const user = await User.create({
+      username,
+      password,
+      email,
+      mobile_no,
+      address,
+      pincode,
+    });
+
+    res.status(201).json({
+      message: "user created successfully",
+      data: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        address: user.address,
+        mobile_no: user.mobile_no,
+        pincode: user.pincode,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ message: "unable to create user!" });
     return;
   }
-
-  const existing = await User.findOne({ email });
-  if (existing) {
-    res.status(409).json({ message: "User exist with email" });
-    return;
-  }
-
-  const user = await User.create({
-    username,
-    password,
-    email,
-    mobile_no,
-    address,
-    pincode,
-  });
-
-  await user.save();
-
-  if (!user) {
-    throw new Error("unable to create user!");
-  }
-
-  res.status(201).json({
-    message: "user created successfully",
-    data: {
-      id: user.id,
-      username: user.username,
-      email: user.email,
-      address: user.address,
-      mobile_no: user.mobile_no,
-      pincode: user.pincode,
-    },
-  });
 }
