@@ -62,7 +62,7 @@ export async function getMeals(req: Request, res: Response) {
 
     res.status(200).json({ data: meals });
   } catch (error) {
-    res.status(400).json({ message: "Unable to fetch meals" });
+    res.status(500).json({ message: "Unable to fetch meals" });
     return;
   }
 }
@@ -125,6 +125,14 @@ export async function updateMeal(req: Request, res: Response) {
     if (!updatedMeal) {
       res.status(404).json({ message: "Meal not found" });
       return;
+    }
+
+    if (meal_name && meal_name !== meal.meal_name) {
+      await Plate.updateMany(
+        { "plate_items.meal_id": meal._id },
+        { $set: { "plate_items.$[item].meal_name": updatedMeal.meal_name } },
+        { arrayFilters: [{ "item.meal_id": meal._id }] },
+      );
     }
 
     res
@@ -266,7 +274,7 @@ export async function getMealPlates(req: Request, res: Response) {
 
     res.status(200).json({ data: plates });
   } catch (error) {
-    res.status(400).json({ message: "Unable to fetch plates" });
+    res.status(500).json({ message: "Unable to fetch plates" });
     return;
   }
 }
@@ -294,7 +302,7 @@ export async function getMealPlate(req: Request, res: Response) {
 
     res.status(200).json({ data: plate });
   } catch (error) {
-    res.status(500).json({ message: "Unable to fetch meal" });
+    res.status(500).json({ message: "Unable to fetch plate" });
     return;
   }
 }
@@ -474,7 +482,7 @@ export async function removePlateItem(req: Request, res: Response) {
       return;
     }
 
-    res.status(201).json({ message: "Plate item removed", data: updatedPlate });
+    res.status(200).json({ message: "Plate item removed", data: updatedPlate });
   } catch (error) {
     res.status(500).json({ message: "Unable to add item in plate" });
     return;
@@ -498,7 +506,7 @@ export async function getMealCollection(req: Request, res: Response) {
     const meals = await Meal.find({ "seller_information.seller_id": user.id });
 
     if (!meals) {
-      res.status(400).json({ message: "Unable to fetch meals" });
+      res.status(500).json({ message: "Unable to fetch meals" });
       return;
     }
 
@@ -507,7 +515,7 @@ export async function getMealCollection(req: Request, res: Response) {
     });
 
     if (!plates) {
-      res.status(400).json({ message: "Unable to fetch plates" });
+      res.status(500).json({ message: "Unable to fetch plates" });
       return;
     }
 
