@@ -38,9 +38,7 @@ export async function signup(req: Request, res: Response) {
   try {
     const { username, password, email, mobile_no, address, pincode } = req.body;
 
-    if (
-      [username, password, email, mobile_no, address, pincode].some((f) => !f)
-    ) {
+    if ([username, password, email].some((f) => !f)) {
       res.status(400).json({ message: "All fields are required!" });
       return;
     }

@@ -11,7 +11,7 @@ export async function getUser(req: Request, res: Response) {
     return;
   }
 
-  res.status(200).json({ message: "User fetched successfully!", data: user });
+  res.status(200).json(user);
 }
 
 // -------------------------------------------------------------
