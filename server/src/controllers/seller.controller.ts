@@ -1,4 +1,5 @@
 import type { Request, Response } from "express";
+
 import { UserModel as User } from "../models/user.model";
 
 // -------------------------------------------------------------
@@ -15,7 +16,7 @@ export async function registerSeller(req: Request, res: Response) {
     return;
   }
 
-  res.status(200).json({ message: "Seller registered", data: seller });
+  res.status(201).json(seller);
 }
 
 // -------------------------------------------------------------
@@ -32,7 +33,7 @@ export async function unregisterSeller(req: Request, res: Response) {
     return;
   }
 
-  res.status(200).json({ message: "Seller unregistered", data: seller });
+  res.status(201).json(seller);
 }
 
 // -------------------------------------------------------------
@@ -40,10 +41,10 @@ export async function unregisterSeller(req: Request, res: Response) {
 export async function getAllSeller(req: Request, res: Response) {
   try {
     const sellers = await User.find({ is_registered_seller: true }).select(
-      "id username avatar_url is_registered_seller",
+      "id name email avatar_url is_registered_seller",
     );
 
-    res.status(200).json({ data: sellers });
+    res.status(200).json(sellers);
   } catch {
     res.status(500).json({ message: "Failed to fetch sellers" });
   }

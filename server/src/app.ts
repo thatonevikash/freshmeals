@@ -13,7 +13,9 @@ app.use(express.urlencoded({ extended: true }));
 
 // -------------------------------------------------------------
 
-app.get("/health", (_, res) => res.status(200).json({ message: "live" }));
+app.get("/health", (_, res) =>
+  res.status(200).json({ message: "🔴 freshmeals is live" }),
+);
 
 app.use("/api", routes);
 

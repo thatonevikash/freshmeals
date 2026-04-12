@@ -1,20 +1,16 @@
 import mongoose, { Document, Schema } from "mongoose";
-import type { ISellerInformation } from "./seller.model";
+import { SellerSchema, type ISeller } from "./seller.model";
 
 // -------------------------------------------------------------
 
-export interface IMeal extends ISellerInformation {
+export interface IMeal {
   meal_name: string;
   meal_price: string;
   meal_img_url?: string;
+  seller_information: ISeller;
 }
 
-export interface IMealDocument extends IMeal, Document {
-  _id: mongoose.Types.ObjectId;
-  meal_id: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+export interface IMealDocument extends IMeal, Document {}
 
 // -------------------------------------------------------------
 
@@ -31,26 +27,17 @@ const MealSchema = new Schema<IMealDocument>(
       default: "0",
       required: [true, "price is required for meal"],
     },
-    meal_img_url: { type: String },
-    seller_information: {
-      seller_name: { type: String, required: true },
-      seller_avatarUrl: { type: String },
-      seller_id: { type: Schema.Types.ObjectId, ref: "user", required: true },
-      seller_level: {
-        type: String,
-        enum: ["", "Beginner", "Intermediate", "Elite"],
-        default: "",
-      },
-    },
+    meal_img_url: { type: String, default: null },
+    seller_information: SellerSchema,
   },
   {
     timestamps: true,
     toJSON: {
       virtuals: true,
       transform: (_, ret: any) => {
-        ret.meal_id = ret._id.toString();
-        delete ret._id;
+        ret.id = ret._id;
         delete ret.__v;
+        delete ret._id;
         return ret;
       },
     },

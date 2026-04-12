@@ -8,11 +8,17 @@ import authRoutes from "./auth.routes";
 import orderRoutes from "./order.routes";
 import sellerRoutes from "./seller.routes";
 
+import publicRoutes from "./public.routes";
+
 // -------------------------------------------------------------
 
 const router = Router();
 
+// public
+router.use(publicRoutes);
 router.use("/auth", authRoutes);
+
+// private
 router.use("/user", Auth.isAuthenticated, userRoutes);
 router.use("/meal", Auth.isAuthenticated, mealRoutes);
 router.use("/order", Auth.isAuthenticated, orderRoutes);

@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 // -------------------------------------------------------------
 
 export interface IUser {
-  username: string;
+  name: string;
   email: string;
   password: string;
   address?: string;
@@ -15,9 +15,6 @@ export interface IUser {
 }
 
 export interface IUserDocument extends IUser, Document {
-  _id: mongoose.Types.ObjectId;
-  createdAt: Date;
-  updatedAt: Date;
   comparePassword(password: string): Promise<boolean>;
 }
 
@@ -25,9 +22,9 @@ export interface IUserDocument extends IUser, Document {
 
 const UserSchema = new Schema<IUserDocument>(
   {
-    username: {
+    name: {
       type: String,
-      required: [true, "username is required"],
+      required: [true, "name is required"],
       trim: true,
     },
     email: {
@@ -49,7 +46,7 @@ const UserSchema = new Schema<IUserDocument>(
     toJSON: {
       virtuals: true,
       transform: (_, ret: any) => {
-        ret.id = ret._id.toString();
+        ret.id = ret._id;
         delete ret.__v;
         delete ret._id;
         return ret;

@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { UserModel as User } from "../models/user.model";
+
 import { MealModel as Meal } from "../models/meal.model";
 import { PlateModel as Plate } from "../models/plate.model";
 
@@ -12,15 +12,8 @@ export async function createMeal(req: Request, res: Response) {
   try {
     const { meal_name, meal_price, meal_img_url } = req.body;
 
-    const user = await User.findById(req.userId);
-
-    if (!user) {
-      res.status(404).json({ message: "User not found" });
-      return;
-    }
-
-    if (user && !user.is_registered_seller) {
-      res.status(401).json({ message: "User is not registered seller" });
+    if (!req.userId) {
+      res.status(401).json({ message: "Unauthorized: No User ID found" });
       return;
     }
 
@@ -29,15 +22,19 @@ export async function createMeal(req: Request, res: Response) {
       return;
     }
 
-    const meal = await Meal.create({
+    const newMeal = await Meal.create({
       meal_name,
       meal_price,
       meal_img_url,
       seller_information: {
-        seller_id: user.id,
-        seller_name: user.username,
-        seller_avatarUrl: user.avatar_url,
+        seller: req.userId,
       },
+    });
+
+    const meal = await Meal.findById(newMeal.id).populate({
+      path: "seller_information.seller",
+      model: "user",
+      select: "id name avatar_url",
     });
 
     res.status(201).json(meal);
@@ -51,21 +48,21 @@ export async function createMeal(req: Request, res: Response) {
 
 export async function getMeals(req: Request, res: Response) {
   try {
-    const user = await User.findById(req.userId);
-
-    if (!user) {
-      res.status(404).json({ message: "User not found" });
+    if (!req.userId) {
+      res.status(401).json({ message: "Unauthorized: No User ID found" });
       return;
     }
 
-    const isRegisteredSeller = user.is_registered_seller;
-
-    if (!isRegisteredSeller) {
-      res.status(401).json({ message: "User is not registered as seller" });
-      return;
-    }
-
-    const meals = await Meal.find({ "seller_information.seller_id": user.id });
+    const meals = await Meal.find({
+      "seller_information.seller": req.userId,
+    })
+      .populate({
+        path: "seller_information.seller",
+        model: "user",
+        select: "id name avatar_url",
+      })
+      .sort({ createdAt: "desc" })
+      .select("-createdAt -updatedAt");
 
     res.status(200).json(meals);
   } catch (error) {
@@ -80,18 +77,14 @@ export async function getMeal(req: Request, res: Response) {
   try {
     const { meal_id } = req.params;
 
-    const meal = await Meal.findById(meal_id);
+    const meal = await Meal.findById(meal_id).populate({
+      path: "seller_information.seller",
+      model: "user",
+      select: "id name avatar_url",
+    });
 
     if (!meal) {
       res.status(404).json({ message: "Meal not found!" });
-      return;
-    }
-
-    const isSeller =
-      meal.seller_information.seller_id.toString() === req.userId;
-
-    if (!isSeller) {
-      res.status(401).json({ message: "Unauthorized" });
       return;
     }
 
@@ -108,20 +101,13 @@ export async function updateMeal(req: Request, res: Response) {
   try {
     const { meal_id } = req.params;
     const { meal_name, meal_price, meal_img_url } = req.body;
+
     const updates = { meal_name, meal_price, meal_img_url };
 
     const meal = await Meal.findById(meal_id);
 
     if (!meal) {
       res.status(404).json({ message: "Meal not found!" });
-      return;
-    }
-
-    const isSeller =
-      meal.seller_information.seller_id.toString() === req.userId;
-
-    if (!isSeller) {
-      res.status(401).json({ message: "Unauthorized" });
       return;
     }
 
@@ -134,13 +120,10 @@ export async function updateMeal(req: Request, res: Response) {
       return;
     }
 
-    if (meal_name && meal_name !== meal.meal_name) {
-      await Plate.updateMany(
-        { "plate_items.meal_id": meal._id },
-        { $set: { "plate_items.$[item].meal_name": updatedMeal.meal_name } },
-        { arrayFilters: [{ "item.meal_id": meal._id }] },
-      );
-    }
+    await Plate.updateMany(
+      { plate_items: meal._id },
+      { $pull: { plates_items: meal._id } },
+    );
 
     res.status(200).json(updatedMeal);
   } catch (error) {
@@ -162,17 +145,9 @@ export async function deleteMeal(req: Request, res: Response) {
       return;
     }
 
-    const isSeller =
-      meal.seller_information.seller_id.toString() === req.userId;
-
-    if (!isSeller) {
-      res.status(401).json({ message: "Unauthorized" });
-      return;
-    }
-
     await Plate.updateMany(
-      { "plate_items.meal_id": meal._id },
-      { $pull: { plate_items: { meal_id: meal._id } } },
+      { "plate_items.meal_id": meal.id },
+      { $pull: { plate_items: { meal_id: meal.id } } },
     );
 
     const deletedMeal = await Meal.findByIdAndDelete(meal_id);
@@ -198,15 +173,8 @@ export async function createMealPlate(req: Request, res: Response) {
   try {
     const { plate_name, plate_price, plate_img_url, plate_items } = req.body;
 
-    const user = await User.findById(req.userId);
-
-    if (!user) {
-      res.status(404).json({ message: "User not found" });
-      return;
-    }
-
-    if (user && !user.is_registered_seller) {
-      res.status(401).json({ message: "User is not registered seller" });
+    if (!req.userId) {
+      res.status(401).json({ message: "Unauthorized: No User ID found" });
       return;
     }
 
@@ -224,30 +192,42 @@ export async function createMealPlate(req: Request, res: Response) {
 
     const meals = await Meal.find({
       _id: { $in: plate_items },
-      "seller_information.seller_id": user.id,
-    }).select("_id meal_name");
+      "seller_information.seller": req.userId,
+    }).select("_id");
 
     if (meals.length !== plate_items.length) {
       res.status(400).json({ message: "One or more meal IDs are invalid" });
       return;
     }
 
-    const resolvedPlateItems = meals.map((meal) => ({
-      meal_id: meal._id,
-      meal_name: meal.meal_name,
-    }));
+    const resolvedPlateItems = meals.map((meal) => meal.id);
 
-    const plate = await Plate.create({
+    const newPlate = await Plate.create({
       plate_name,
       plate_price,
       plate_items: resolvedPlateItems,
       plate_img_url,
       seller_information: {
-        seller_id: user.id,
-        seller_name: user.username,
-        seller_avatarUrl: user.avatar_url,
+        seller: req.userId,
       },
     });
+
+    const plate = await Plate.findById(newPlate.id)
+      .populate({
+        path: "seller_information.seller",
+        model: "user",
+        select: "id name avatar_url",
+      })
+      .populate({
+        path: "plate_items",
+        model: "meal",
+        select: "id meal_name meal_img_url",
+      });
+
+    if (!plate) {
+      res.status(404).json({ message: "Plate not found!" });
+      return;
+    }
 
     res.status(201).json(plate);
   } catch (error) {
@@ -260,16 +240,24 @@ export async function createMealPlate(req: Request, res: Response) {
 
 export async function getMealPlates(req: Request, res: Response) {
   try {
-    const user = await User.findById(req.userId);
-
-    if (!user) {
-      res.status(404).json({ message: "User not found" });
+    if (!req.userId) {
+      res.status(401).json({ message: "Unauthorized: No User ID found" });
       return;
     }
 
     const plates = await Plate.find({
-      "seller_information.seller_id": user.id,
-    });
+      "seller_information.seller": req.userId,
+    })
+      .populate({
+        path: "seller_information.seller",
+        model: "user",
+        select: "id name avatar_url",
+      })
+      .populate({
+        path: "plate_items",
+        model: "meal",
+        select: "id meal_name meal_img_url",
+      });
 
     res.status(200).json(plates);
   } catch (error) {
@@ -284,18 +272,20 @@ export async function getMealPlate(req: Request, res: Response) {
   try {
     const { plate_id } = req.params;
 
-    const plate = await Plate.findById(plate_id);
+    const plate = await Plate.findById(plate_id)
+      .populate({
+        path: "seller_information.seller",
+        model: "user",
+        select: "id name avatar_url",
+      })
+      .populate({
+        path: "plate_items",
+        model: "meal",
+        select: "id meal_name meal_img_url",
+      });
 
     if (!plate) {
       res.status(404).json({ message: "Plate not found!" });
-      return;
-    }
-
-    const isSeller =
-      plate.seller_information.seller_id.toString() === req.userId;
-
-    if (!isSeller) {
-      res.status(401).json({ message: "Unauthorized" });
       return;
     }
 
@@ -312,6 +302,7 @@ export async function updateMealPlate(req: Request, res: Response) {
   try {
     const { plate_id } = req.params;
     const { plate_name, plate_price, plate_img_url } = req.body;
+
     const updates = { plate_name, plate_price, plate_img_url };
 
     const plate = await Plate.findById(plate_id);
@@ -321,17 +312,19 @@ export async function updateMealPlate(req: Request, res: Response) {
       return;
     }
 
-    const isSeller =
-      plate.seller_information.seller_id.toString() === req.userId;
-
-    if (!isSeller) {
-      res.status(401).json({ message: "Unauthorized" });
-      return;
-    }
-
     const updatedPlate = await Plate.findByIdAndUpdate(plate_id, updates, {
       new: true,
-    });
+    })
+      .populate({
+        path: "seller_information.seller",
+        model: "user",
+        select: "id name avatar_url",
+      })
+      .populate({
+        path: "plate_items",
+        model: "meal",
+        select: "id meal_name meal_img_url",
+      });
 
     if (!updatedPlate) {
       res.status(404).json({ message: "Plate not found" });
@@ -358,15 +351,17 @@ export async function deleteMealPlate(req: Request, res: Response) {
       return;
     }
 
-    const isSeller =
-      plate.seller_information.seller_id.toString() === req.userId;
-
-    if (!isSeller) {
-      res.status(401).json({ message: "Unauthorized" });
-      return;
-    }
-
-    const deletedPlate = await Plate.findByIdAndDelete(plate_id);
+    const deletedPlate = await Plate.findByIdAndDelete(plate_id)
+      .populate({
+        path: "seller_information.seller",
+        model: "user",
+        select: "id name avatar_url",
+      })
+      .populate({
+        path: "plate_items",
+        model: "meal",
+        select: "id meal_name meal_img_url",
+      });
 
     if (!deletedPlate) {
       res.status(404).json({ message: "Plate not found" });
@@ -393,14 +388,6 @@ export async function addPlateItem(req: Request, res: Response) {
       return;
     }
 
-    const isPlateSeller =
-      plate.seller_information.seller_id.toString() === req.userId;
-
-    if (!isPlateSeller) {
-      res.status(403).json({ message: "Can not modify this plate" });
-      return;
-    }
-
     const meal = await Meal.findById(meal_id);
 
     if (!meal) {
@@ -408,21 +395,21 @@ export async function addPlateItem(req: Request, res: Response) {
       return;
     }
 
-    const isMealSeller =
-      meal.seller_information.seller_id.toString() === req.userId;
-
-    if (!isMealSeller) {
-      res.status(403).json({ message: "Can add only your meals" });
-      return;
-    }
-
-    const resolvedPlateItem = { meal_id: meal._id, meal_name: meal.meal_name };
-
     const updatedPlate = await Plate.findByIdAndUpdate(
       plate_id,
-      { $addToSet: { plate_items: { $each: [resolvedPlateItem] } } },
+      { $addToSet: { plate_items: { $each: [meal.id] } } },
       { new: true },
-    );
+    )
+      .populate({
+        path: "seller_information.seller",
+        model: "user",
+        select: "id name avatar_url",
+      })
+      .populate({
+        path: "plate_items",
+        model: "meal",
+        select: "id meal_name meal_img_url",
+      });
 
     if (!updatedPlate) {
       res.status(400).json({ message: "Plate updation failed" });
@@ -449,14 +436,6 @@ export async function removePlateItem(req: Request, res: Response) {
       return;
     }
 
-    const isPlateSeller =
-      plate.seller_information.seller_id.toString() === req.userId;
-
-    if (!isPlateSeller) {
-      res.status(403).json({ message: "Can not modify this plate" });
-      return;
-    }
-
     const meal = await Meal.findById(meal_id);
 
     if (!meal) {
@@ -464,13 +443,21 @@ export async function removePlateItem(req: Request, res: Response) {
       return;
     }
 
-    const resolvedPlateItem = { meal_id: meal._id, meal_name: meal.meal_name };
-
     const updatedPlate = await Plate.findByIdAndUpdate(
       plate_id,
-      { $pull: { plate_items: resolvedPlateItem } },
+      { $pull: { plate_items: meal.id } },
       { new: true },
-    );
+    )
+      .populate({
+        path: "seller_information.seller",
+        model: "user",
+        select: "id name avatar_url",
+      })
+      .populate({
+        path: "plate_items",
+        model: "meal",
+        select: "id meal_name meal_img_url",
+      });
 
     if (!updatedPlate) {
       res.status(400).json({ message: "Plate updation failed" });
@@ -491,35 +478,32 @@ export async function removePlateItem(req: Request, res: Response) {
 
 export async function getMealCollection(req: Request, res: Response) {
   try {
-    const user = await User.findById(req.userId);
-
-    if (!user) {
-      res.status(404).json({ message: "User not found" });
+    if (!req.userId) {
+      res.status(401).json({ message: "Unauthorized: No User ID found" });
       return;
     }
 
-    const isRegisteredSeller = user.is_registered_seller;
-
-    if (!isRegisteredSeller) {
-      res.status(401).json({ message: "User is not registered as seller" });
-      return;
-    }
-
-    const meals = await Meal.find({ "seller_information.seller_id": user.id });
-
-    if (!meals) {
-      res.status(500).json({ message: "Unable to fetch meals" });
-      return;
-    }
-
-    const plates = await Plate.find({
-      "seller_information.seller_id": user.id,
+    const meals = await Meal.find({
+      "seller_information.seller": req.userId,
+    }).populate({
+      path: "seller_information.seller",
+      model: "user",
+      select: "id name avatar_url",
     });
 
-    if (!plates) {
-      res.status(500).json({ message: "Unable to fetch plates" });
-      return;
-    }
+    const plates = await Plate.find({
+      "seller_information.seller": req.userId,
+    })
+      .populate({
+        path: "seller_information.seller",
+        model: "user",
+        select: "id name avatar_url",
+      })
+      .populate({
+        path: "plate_items",
+        model: "meal",
+        select: "id meal_name meal_img_url",
+      });
 
     res.status(200).json({ meals, plates });
   } catch (error) {
@@ -541,3 +525,31 @@ export async function getMostOrderedPlates(req: Request, res: Response) {}
 // -------------------------------------------------------------
 
 export async function orderMeal(req: Request, res: Response) {}
+
+// -------------------------------------------------------------
+
+// Public
+// -------------------------------------------------------------
+
+export async function getAllMeals(req: Request, res: Response) {
+  try {
+    const size = Math.min(Number(req.query.size) || 20, 100);
+    const page = Math.max(Number(req.query.page) || 1, 1);
+
+    const meals = await Meal.find()
+      .populate({
+        path: "seller_information.seller",
+        model: "user",
+        select: "id name avatar_url",
+      })
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * size)
+      .limit(size)
+      .select("-createdAt -updatedAt");
+
+    res.status(200).json(meals);
+  } catch (error) {
+    res.status(500).json({ message: "Unable to fetch meals" });
+    return;
+  }
+}

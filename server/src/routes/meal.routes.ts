@@ -1,29 +1,50 @@
 import { Router } from "express";
+import * as Auth from "../middlewares/auth.middleware";
 import * as Controller from "../controllers/meal.controller";
 
 // -------------------------------------------------------------
 
 const router = Router();
 
-router.get("/", Controller.getMeals);
+router.get("/", Auth.isAuthorizedSeller, Controller.getMeals);
 
-router.post("/", Controller.createMeal);
+router.post("/", Auth.isAuthorizedSeller, Controller.createMeal);
 
-router.get("/plate", Controller.getMealPlates);
+router.get("/plate", Auth.isAuthorizedSeller, Controller.getMealPlates);
 
-router.post("/plate", Controller.createMealPlate);
+router.post("/plate", Auth.isAuthorizedSeller, Controller.createMealPlate);
 
-router.get("/collection", Controller.getMealCollection);
+router.get(
+  "/collection",
+  Auth.isAuthorizedSeller,
+  Controller.getMealCollection,
+);
 
 router.get("/plate/:plate_id", Controller.getMealPlate);
 
-router.put("/plate/:plate_id", Controller.updateMealPlate);
+router.put(
+  "/plate/:plate_id",
+  Auth.isAuthorizedSeller,
+  Controller.updateMealPlate,
+);
 
-router.delete("/plate/:plate_id", Controller.deleteMealPlate);
+router.delete(
+  "/plate/:plate_id",
+  Auth.isAuthorizedSeller,
+  Controller.deleteMealPlate,
+);
 
-router.patch("/plate/:plate_id/add/:meal_id", Controller.addPlateItem);
+router.patch(
+  "/plate/:plate_id/add/:meal_id",
+  Auth.isAuthorizedSeller,
+  Controller.addPlateItem,
+);
 
-router.patch("/plate/:plate_id/remove/:meal_id", Controller.removePlateItem);
+router.patch(
+  "/plate/:plate_id/remove/:meal_id",
+  Auth.isAuthorizedSeller,
+  Controller.removePlateItem,
+);
 
 router.post("/order", Controller.orderMeal);
 
@@ -37,8 +58,8 @@ router.get("/plate/:plate_id", Controller.getMealPlate);
 
 router.get("/:meal_id", Controller.getMeal);
 
-router.put("/:meal_id", Controller.updateMeal);
+router.put("/:meal_id", Auth.isAuthorizedSeller, Controller.updateMeal);
 
-router.delete("/:meal_id", Controller.deleteMeal);
+router.delete("/:meal_id", Auth.isAuthorizedSeller, Controller.deleteMeal);
 
 export default router;

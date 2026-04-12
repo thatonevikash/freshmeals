@@ -1,10 +1,11 @@
-import mongoose, { Document, Schema } from "mongoose";
+import mongoose, { Document, Schema, Types } from "mongoose";
 
 // -------------------------------------------------------------
 
 export interface IOrderItem {
-  id: string;
-  meal_type: "Single" | "Plate";
+  meal_id?: Types.ObjectId;
+  plate_id?: Types.ObjectId;
+  meal_type: "Item" | "Plate";
   quantity: number;
 }
 
@@ -14,33 +15,40 @@ export interface IOrder {
   order_items: IOrderItem[];
   order_status: OrderStatus;
   order_date: Date;
-  user_information: mongoose.Types.ObjectId | string;
+  user_information: Types.ObjectId;
   delivery_information: {
     mobile_no: string;
   };
 }
 
-export interface IOrderDocument extends IOrder, Document {
-  _id: mongoose.Types.ObjectId;
-  order_id: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+export interface IOrderDocument extends IOrder, Document {}
 
 // -------------------------------------------------------------
 
+const OrderItemSchema = new Schema<IOrderItem>({
+  meal_id: { type: Schema.Types.ObjectId, ref: "meal" },
+  plate_id: { type: Schema.Types.ObjectId, ref: "plate" },
+  meal_type: {
+    type: String,
+    enum: ["Item", "Plate"],
+    default: "Item",
+    required: true,
+  },
+  quantity: { type: Number, default: 0 },
+});
+
 const OrderSchema = new Schema<IOrderDocument>(
   {
-    order_items: [
-      {
-        id: {
-          type: Schema.Types.ObjectId,
-          ref: "plate",
-        },
-        meal_type: { type: ["Single", "Plate"], required: true },
-        quantity: { type: Number, default: 1 },
-      },
-    ],
+    order_items: [OrderItemSchema],
+    order_status: {
+      type: String,
+      enum: ["Processing", "Canceled", "Approved", "Delivered"],
+      default: "Processing",
+    },
+    order_date: {
+      type: Date,
+      default: Date.now,
+    },
     user_information: {
       type: Schema.Types.ObjectId,
       ref: "user",
@@ -55,7 +63,7 @@ const OrderSchema = new Schema<IOrderDocument>(
     toJSON: {
       virtuals: true,
       transform: (_, ret: any) => {
-        ret.order_id = ret._id;
+        ret.id = ret._id;
         delete ret.__v;
         delete ret._id;
         return ret;
