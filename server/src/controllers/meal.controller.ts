@@ -27,11 +27,15 @@ export async function createMeal(req: Request, res: Response) {
       meal_price,
       meal_img_url,
       seller_information: {
-        seller_id: req.userId,
+        seller: req.userId,
       },
     });
 
-    const meal = await Meal.findById(newMeal.id);
+    const meal = await Meal.findById(newMeal.id).populate({
+      path: "seller_information.seller",
+      model: "user",
+      select: "id name avatar_url",
+    });
 
     res.status(201).json(meal);
   } catch (error) {
@@ -73,7 +77,11 @@ export async function getMeal(req: Request, res: Response) {
   try {
     const { meal_id } = req.params;
 
-    const meal = await Meal.findById(meal_id);
+    const meal = await Meal.findById(meal_id).populate({
+      path: "seller_information.seller",
+      model: "user",
+      select: "id name avatar_url",
+    });
 
     if (!meal) {
       res.status(404).json({ message: "Meal not found!" });
@@ -186,9 +194,9 @@ export async function createMealPlate(req: Request, res: Response) {
     }
 
     const meals = await Meal.find({
-      id: { $in: plate_items },
+      _id: { $in: plate_items },
       "seller_information.seller": req.userId,
-    }).select("id");
+    }).select("_id");
 
     if (meals.length !== plate_items.length) {
       res.status(400).json({ message: "One or more meal IDs are invalid" });
@@ -207,11 +215,17 @@ export async function createMealPlate(req: Request, res: Response) {
       },
     });
 
-    const plate = await Plate.findById(newPlate.id).populate({
-      path: "seller_information.seller",
-      model: "user",
-      select: "id name avatar_url",
-    });
+    const plate = await Plate.findById(newPlate.id)
+      .populate({
+        path: "seller_information.seller",
+        model: "user",
+        select: "id name avatar_url",
+      })
+      .populate({
+        path: "plate_items",
+        model: "meal",
+        select: "id meal_name meal_img_url",
+      });
 
     if (!plate) {
       res.status(404).json({ message: "Plate not found!" });
@@ -236,7 +250,17 @@ export async function getMealPlates(req: Request, res: Response) {
 
     const plates = await Plate.find({
       "seller_information.seller": req.userId,
-    });
+    })
+      .populate({
+        path: "seller_information.seller",
+        model: "user",
+        select: "id name avatar_url",
+      })
+      .populate({
+        path: "plate_items",
+        model: "meal",
+        select: "id meal_name meal_img_url",
+      });
 
     res.status(200).json(plates);
   } catch (error) {
@@ -251,11 +275,17 @@ export async function getMealPlate(req: Request, res: Response) {
   try {
     const { plate_id } = req.params;
 
-    const plate = await Plate.findById(plate_id).populate({
-      path: "seller_information.seller",
-      model: "user",
-      select: "id name avatar_url",
-    });
+    const plate = await Plate.findById(plate_id)
+      .populate({
+        path: "seller_information.seller",
+        model: "user",
+        select: "id name avatar_url",
+      })
+      .populate({
+        path: "plate_items",
+        model: "meal",
+        select: "id meal_name meal_img_url",
+      });
 
     if (!plate) {
       res.status(404).json({ message: "Plate not found!" });
@@ -287,11 +317,17 @@ export async function updateMealPlate(req: Request, res: Response) {
 
     const updatedPlate = await Plate.findByIdAndUpdate(plate_id, updates, {
       new: true,
-    }).populate({
-      path: "seller_information.seller",
-      model: "user",
-      select: "id name avatar_url",
-    });
+    })
+      .populate({
+        path: "seller_information.seller",
+        model: "user",
+        select: "id name avatar_url",
+      })
+      .populate({
+        path: "plate_items",
+        model: "meal",
+        select: "id meal_name meal_img_url",
+      });
 
     if (!updatedPlate) {
       res.status(404).json({ message: "Plate not found" });
@@ -318,11 +354,17 @@ export async function deleteMealPlate(req: Request, res: Response) {
       return;
     }
 
-    const deletedPlate = await Plate.findByIdAndDelete(plate_id).populate({
-      path: "seller_information.seller",
-      model: "user",
-      select: "id name avatar_url",
-    });
+    const deletedPlate = await Plate.findByIdAndDelete(plate_id)
+      .populate({
+        path: "seller_information.seller",
+        model: "user",
+        select: "id name avatar_url",
+      })
+      .populate({
+        path: "plate_items",
+        model: "meal",
+        select: "id meal_name meal_img_url",
+      });
 
     if (!deletedPlate) {
       res.status(404).json({ message: "Plate not found" });
@@ -356,17 +398,21 @@ export async function addPlateItem(req: Request, res: Response) {
       return;
     }
 
-    const resolvedPlateItem = { meal_id: meal.id };
-
     const updatedPlate = await Plate.findByIdAndUpdate(
       plate_id,
-      { $addToSet: { plate_items: { $each: [resolvedPlateItem] } } },
+      { $addToSet: { plate_items: { $each: [meal.id] } } },
       { new: true },
-    ).populate({
-      path: "seller_information.seller",
-      model: "user",
-      select: "id name avatar_url",
-    });
+    )
+      .populate({
+        path: "seller_information.seller",
+        model: "user",
+        select: "id name avatar_url",
+      })
+      .populate({
+        path: "plate_items",
+        model: "meal",
+        select: "id meal_name meal_img_url",
+      });
 
     if (!updatedPlate) {
       res.status(400).json({ message: "Plate updation failed" });
@@ -400,17 +446,21 @@ export async function removePlateItem(req: Request, res: Response) {
       return;
     }
 
-    const resolvedPlateItem = { meal_id: meal.id };
-
     const updatedPlate = await Plate.findByIdAndUpdate(
       plate_id,
-      { $pull: { plate_items: resolvedPlateItem } },
+      { $pull: { plate_items: meal.id } },
       { new: true },
-    ).populate({
-      path: "seller_information.seller",
-      model: "user",
-      select: "id name avatar_url",
-    });
+    )
+      .populate({
+        path: "seller_information.seller",
+        model: "user",
+        select: "id name avatar_url",
+      })
+      .populate({
+        path: "plate_items",
+        model: "meal",
+        select: "id meal_name meal_img_url",
+      });
 
     if (!updatedPlate) {
       res.status(400).json({ message: "Plate updation failed" });

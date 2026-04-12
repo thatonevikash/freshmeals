@@ -47,7 +47,7 @@ export async function isAuthorizedSeller(
   const isAuthorized = user.is_registered_seller;
 
   if (!isAuthorized) {
-    res.status(401).json({ message: "User is not authorized seller" });
+    res.status(403).json({ message: "User is not authorized seller" });
     return;
   }
 

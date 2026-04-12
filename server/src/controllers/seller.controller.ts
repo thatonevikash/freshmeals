@@ -16,7 +16,7 @@ export async function registerSeller(req: Request, res: Response) {
     return;
   }
 
-  res.status(200).json(seller);
+  res.status(201).json(seller);
 }
 
 // -------------------------------------------------------------
@@ -33,7 +33,7 @@ export async function unregisterSeller(req: Request, res: Response) {
     return;
   }
 
-  res.status(200).json(seller);
+  res.status(201).json(seller);
 }
 
 // -------------------------------------------------------------
@@ -41,7 +41,7 @@ export async function unregisterSeller(req: Request, res: Response) {
 export async function getAllSeller(req: Request, res: Response) {
   try {
     const sellers = await User.find({ is_registered_seller: true }).select(
-      "id username email avatar_url is_registered_seller",
+      "id name email avatar_url is_registered_seller",
     );
 
     res.status(200).json(sellers);

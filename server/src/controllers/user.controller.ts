@@ -22,21 +22,17 @@ export async function updateUser(req: Request, res: Response) {
   try {
     const { avatar_url, name, mobile_no, address, pincode } = req.body;
 
+    const updates: Record<string, unknown> = {};
+    if (avatar_url !== undefined) updates.avatar_url = avatar_url;
+    if (name !== undefined) updates.name = name;
+    if (mobile_no !== undefined) updates.mobile_no = mobile_no;
+    if (address !== undefined) updates.address = address;
+    if (pincode !== undefined) updates.pincode = pincode;
+
     const updatedUser = await User.findByIdAndUpdate(
       req.userId,
-      {
-        $set: {
-          name,
-          mobile_no,
-          avatar_url,
-          address,
-          pincode,
-        },
-      },
-      {
-        new: true,
-        runValidators: true,
-      },
+      { $set: updates },
+      { new: true, runValidators: true },
     ).select("-createdAt -updatedAt");
 
     res.status(201).json(updatedUser);

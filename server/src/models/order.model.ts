@@ -28,7 +28,12 @@ export interface IOrderDocument extends IOrder, Document {}
 const OrderItemSchema = new Schema<IOrderItem>({
   meal_id: { type: Schema.Types.ObjectId, ref: "meal" },
   plate_id: { type: Schema.Types.ObjectId, ref: "plate" },
-  meal_type: { type: String, enum: ["Item", "Plate"] },
+  meal_type: {
+    type: String,
+    enum: ["Item", "Plate"],
+    default: "Item",
+    required: true,
+  },
   quantity: { type: Number, default: 0 },
 });
 
@@ -42,7 +47,7 @@ const OrderSchema = new Schema<IOrderDocument>(
     },
     order_date: {
       type: Date,
-      default: new Date(),
+      default: Date.now,
     },
     user_information: {
       type: Schema.Types.ObjectId,
