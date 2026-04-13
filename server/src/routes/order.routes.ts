@@ -8,6 +8,8 @@ const router = Router();
 
 router.get("/", Controller.getOrders);
 
+router.post("/", Controller.makeAnOrder);
+
 router.get("/:order_id", Controller.getOrder);
 
 router.put("/:order_id", Controller.updateOrder);
