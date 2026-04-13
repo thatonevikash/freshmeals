@@ -6,6 +6,8 @@ import { OrderModel as Order, type IOrderItem } from "../models/order.model";
 
 import { toOrderDto } from "../dtos/order.dto";
 
+import { ORDER_POPULATE_OPTIONS } from "../configs/populate-options";
+
 // -------------------------------------------------------------
 
 export async function getOrder(req: Request, res: Response) {}
@@ -65,10 +67,9 @@ export async function placeOrder(req: Request, res: Response) {
       order_items: resolvedItems,
     });
 
-    const order = await Order.findById(newOrder._id).populate({
-      path: "customer",
-      model: "user",
-    });
+    const order = await Order.findById(newOrder._id).populate(
+      ORDER_POPULATE_OPTIONS,
+    );
 
     if (!order) {
       res.status(500).json("Unable to make an entry on db");
@@ -92,35 +93,8 @@ export async function getOrders(req: Request, res: Response) {
       return;
     }
 
-    const orders = await Order.find({
-      customer: req.userId,
-    })
-      .populate({
-        path: "customer",
-        model: "user",
-      })
-      .populate({
-        path: "order_items.meal",
-        model: "meal",
-        populate: {
-          path: "seller_information.seller",
-          model: "user",
-        },
-      })
-      .populate({
-        path: "order_items.plate",
-        model: "plate",
-        populate: [
-          {
-            path: "plate_items",
-            model: "meal",
-          },
-          {
-            path: "seller_information.seller",
-            model: "user",
-          },
-        ],
-      })
+    const orders = await Order.find({ customer: req.userId })
+      .populate(ORDER_POPULATE_OPTIONS)
       .sort({ createdAt: -1 });
 
     if (!orders) {

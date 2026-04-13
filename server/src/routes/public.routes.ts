@@ -7,4 +7,6 @@ const router = Router();
 
 router.get("/meals", Controller.getAllMeals);
 
+router.get("/plates", Controller.getAllPlates);
+
 export default router;
