@@ -6,15 +6,15 @@ import { SellerSchema, type ISeller } from "./seller.model";
 export interface IMeal {
   meal_name: string;
   meal_price: string;
-  meal_img_url?: string;
+  meal_img_url: string | null;
   seller_information: ISeller;
 }
 
-export interface IMealDocument extends IMeal, Document {}
+export interface IMealSchema extends IMeal, Document {}
 
 // -------------------------------------------------------------
 
-const MealSchema = new Schema<IMealDocument>(
+const MealSchema = new Schema<IMealSchema>(
   {
     meal_name: {
       type: String,
@@ -46,4 +46,4 @@ const MealSchema = new Schema<IMealDocument>(
 
 // -------------------------------------------------------------
 
-export const MealModel = mongoose.model<IMealDocument>("meal", MealSchema);
+export const MealModel = mongoose.model<IMealSchema>("meal", MealSchema);

@@ -1,19 +1,19 @@
 import type { Request, Response } from "express";
 import { UserModel as User } from "../models/user.model";
 
+import { toUserDto } from "../dtos/user.dto";
+
 // -------------------------------------------------------------
 
 export async function getUser(req: Request, res: Response) {
-  const user = await User.findById(req.userId).select(
-    "-password -createdAt -updatedAt -mobile_no -address -pincode",
-  );
+  const user = await User.findById(req.userId);
 
   if (!user) {
     res.status(404).json({ message: "User not found!" });
     return;
   }
 
-  res.status(200).json(user);
+  res.status(200).json(toUserDto(user));
 }
 
 // -------------------------------------------------------------
