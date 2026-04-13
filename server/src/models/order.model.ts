@@ -54,7 +54,7 @@ const OrderItemSchema = new Schema<IOrderItemDocument>(
       default: "Meal",
       required: true,
     },
-    quantity: { type: Number, default: 0 },
+    quantity: { type: Number, required: true, min: 1 },
   },
   {
     _id: false,
