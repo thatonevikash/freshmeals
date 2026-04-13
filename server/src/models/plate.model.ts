@@ -6,16 +6,16 @@ import { SellerSchema, type ISeller } from "./seller.model";
 export interface IPlate {
   plate_name: string;
   plate_price: string;
-  plate_img_url?: string;
+  plate_img_url: string | null;
   plate_items: Types.ObjectId[];
   seller_information: ISeller;
 }
 
-export interface IPlateDocument extends IPlate, Document {}
+export interface IPlateSchema extends IPlate, Document {}
 
 // -------------------------------------------------------------
 
-const PlateSchema = new Schema<IPlateDocument>(
+const PlateSchema = new Schema<IPlateSchema>(
   {
     plate_name: {
       type: String,
@@ -50,4 +50,4 @@ const PlateSchema = new Schema<IPlateDocument>(
 
 // -------------------------------------------------------------
 
-export const PlateModel = mongoose.model<IPlateDocument>("plate", PlateSchema);
+export const PlateModel = mongoose.model<IPlateSchema>("plate", PlateSchema);

@@ -1,7 +1,10 @@
 import type { Request, Response } from "express";
 
+import { toMealDto } from "../dtos/meal.dto";
+
 import { MealModel as Meal } from "../models/meal.model";
 import { PlateModel as Plate } from "../models/plate.model";
+import { toPlateDto } from "../dtos/plate.dto";
 
 // -------------------------------------------------------------
 
@@ -34,10 +37,14 @@ export async function createMeal(req: Request, res: Response) {
     const meal = await Meal.findById(newMeal.id).populate({
       path: "seller_information.seller",
       model: "user",
-      select: "id name avatar_url",
     });
 
-    res.status(201).json(meal);
+    if (!meal) {
+      res.status(400).json({ message: "Unable to create meal in db" });
+      return;
+    }
+
+    res.status(201).json(toMealDto(meal));
   } catch (error) {
     res.status(500).json({ message: "Unable to create meal" });
     return;
@@ -59,12 +66,11 @@ export async function getMeals(req: Request, res: Response) {
       .populate({
         path: "seller_information.seller",
         model: "user",
-        select: "id name avatar_url",
       })
       .sort({ createdAt: "desc" })
       .select("-createdAt -updatedAt");
 
-    res.status(200).json(meals);
+    res.status(200).json(meals.map(toMealDto));
   } catch (error) {
     res.status(500).json({ message: "Unable to fetch meals" });
     return;
@@ -80,7 +86,6 @@ export async function getMeal(req: Request, res: Response) {
     const meal = await Meal.findById(meal_id).populate({
       path: "seller_information.seller",
       model: "user",
-      select: "id name avatar_url",
     });
 
     if (!meal) {
@@ -88,7 +93,7 @@ export async function getMeal(req: Request, res: Response) {
       return;
     }
 
-    res.status(200).json(meal);
+    res.status(200).json(toMealDto(meal));
   } catch (error) {
     res.status(500).json({ message: "Unable to fetch meal" });
     return;
@@ -113,6 +118,9 @@ export async function updateMeal(req: Request, res: Response) {
 
     const updatedMeal = await Meal.findByIdAndUpdate(meal_id, updates, {
       new: true,
+    }).populate({
+      path: "seller_information.seller",
+      model: "user",
     });
 
     if (!updatedMeal) {
@@ -125,7 +133,7 @@ export async function updateMeal(req: Request, res: Response) {
       { $pull: { plates_items: meal._id } },
     );
 
-    res.status(200).json(updatedMeal);
+    res.status(200).json(toMealDto(updatedMeal));
   } catch (error) {
     res.status(500).json({ message: "Unable to update meal" });
     return;
@@ -216,12 +224,10 @@ export async function createMealPlate(req: Request, res: Response) {
       .populate({
         path: "seller_information.seller",
         model: "user",
-        select: "id name avatar_url",
       })
       .populate({
         path: "plate_items",
         model: "meal",
-        select: "id meal_name meal_img_url",
       });
 
     if (!plate) {
@@ -229,7 +235,7 @@ export async function createMealPlate(req: Request, res: Response) {
       return;
     }
 
-    res.status(201).json(plate);
+    res.status(201).json(toPlateDto(plate));
   } catch (error) {
     res.status(500).json({ message: "Unable to create plate" });
     return;
@@ -251,15 +257,13 @@ export async function getMealPlates(req: Request, res: Response) {
       .populate({
         path: "seller_information.seller",
         model: "user",
-        select: "id name avatar_url",
       })
       .populate({
         path: "plate_items",
         model: "meal",
-        select: "id meal_name meal_img_url",
       });
 
-    res.status(200).json(plates);
+    res.status(200).json(plates.map(toPlateDto));
   } catch (error) {
     res.status(500).json({ message: "Unable to fetch plates" });
     return;
@@ -276,12 +280,10 @@ export async function getMealPlate(req: Request, res: Response) {
       .populate({
         path: "seller_information.seller",
         model: "user",
-        select: "id name avatar_url",
       })
       .populate({
         path: "plate_items",
         model: "meal",
-        select: "id meal_name meal_img_url",
       });
 
     if (!plate) {
@@ -289,7 +291,7 @@ export async function getMealPlate(req: Request, res: Response) {
       return;
     }
 
-    res.status(200).json(plate);
+    res.status(200).json(toPlateDto(plate));
   } catch (error) {
     res.status(500).json({ message: "Unable to fetch plate" });
     return;
@@ -318,12 +320,10 @@ export async function updateMealPlate(req: Request, res: Response) {
       .populate({
         path: "seller_information.seller",
         model: "user",
-        select: "id name avatar_url",
       })
       .populate({
         path: "plate_items",
         model: "meal",
-        select: "id meal_name meal_img_url",
       });
 
     if (!updatedPlate) {
@@ -331,7 +331,7 @@ export async function updateMealPlate(req: Request, res: Response) {
       return;
     }
 
-    res.status(200).json(updatedPlate);
+    res.status(200).json(toPlateDto(updatedPlate));
   } catch (error) {
     res.status(500).json({ message: "Unable to update plate" });
     return;
@@ -355,12 +355,10 @@ export async function deleteMealPlate(req: Request, res: Response) {
       .populate({
         path: "seller_information.seller",
         model: "user",
-        select: "id name avatar_url",
       })
       .populate({
         path: "plate_items",
         model: "meal",
-        select: "id meal_name meal_img_url",
       });
 
     if (!deletedPlate) {
@@ -368,7 +366,7 @@ export async function deleteMealPlate(req: Request, res: Response) {
       return;
     }
 
-    res.status(200).json(deletedPlate);
+    res.status(200).json(toPlateDto(deletedPlate));
   } catch (error) {
     res.status(500).json({ message: "Unable to delete plate" });
     return;
@@ -403,12 +401,10 @@ export async function addPlateItem(req: Request, res: Response) {
       .populate({
         path: "seller_information.seller",
         model: "user",
-        select: "id name avatar_url",
       })
       .populate({
         path: "plate_items",
         model: "meal",
-        select: "id meal_name meal_img_url",
       });
 
     if (!updatedPlate) {
@@ -416,7 +412,7 @@ export async function addPlateItem(req: Request, res: Response) {
       return;
     }
 
-    res.status(201).json(updatedPlate);
+    res.status(201).json(toPlateDto(updatedPlate));
   } catch (error) {
     res.status(500).json({ message: "Unable to add item in plate" });
     return;
@@ -451,12 +447,10 @@ export async function removePlateItem(req: Request, res: Response) {
       .populate({
         path: "seller_information.seller",
         model: "user",
-        select: "id name avatar_url",
       })
       .populate({
         path: "plate_items",
         model: "meal",
-        select: "id meal_name meal_img_url",
       });
 
     if (!updatedPlate) {
@@ -464,7 +458,7 @@ export async function removePlateItem(req: Request, res: Response) {
       return;
     }
 
-    res.status(200).json(updatedPlate);
+    res.status(200).json(toPlateDto(updatedPlate));
   } catch (error) {
     res.status(500).json({ message: "Unable to add item in plate" });
     return;
@@ -497,15 +491,15 @@ export async function getMealCollection(req: Request, res: Response) {
       .populate({
         path: "seller_information.seller",
         model: "user",
-        select: "id name avatar_url",
       })
       .populate({
         path: "plate_items",
         model: "meal",
-        select: "id meal_name meal_img_url",
       });
 
-    res.status(200).json({ meals, plates });
+    res
+      .status(200)
+      .json({ meals: meals.map(toMealDto), plates: plates.map(toPlateDto) });
   } catch (error) {
     res.status(500).json({ message: "Unable to fetch seller collection" });
     return;
@@ -547,7 +541,7 @@ export async function getAllMeals(req: Request, res: Response) {
       .limit(size)
       .select("-createdAt -updatedAt");
 
-    res.status(200).json(meals);
+    res.status(200).json(meals.map(toMealDto));
   } catch (error) {
     res.status(500).json({ message: "Unable to fetch meals" });
     return;

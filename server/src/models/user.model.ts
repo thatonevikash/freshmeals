@@ -10,17 +10,17 @@ export interface IUser {
   address?: string;
   pincode?: number;
   mobile_no?: string;
-  avatar_url?: string;
-  is_registered_seller?: boolean;
+  avatar_url: string | null;
+  is_registered_seller: boolean;
 }
 
-export interface IUserDocument extends IUser, Document {
+export interface IUserSchema extends IUser, Document {
   comparePassword(password: string): Promise<boolean>;
 }
 
 // -------------------------------------------------------------
 
-const UserSchema = new Schema<IUserDocument>(
+const UserSchema = new Schema<IUserSchema>(
   {
     name: {
       type: String,
@@ -68,4 +68,4 @@ UserSchema.methods.comparePassword = async function (password: string) {
 
 // -------------------------------------------------------------
 
-export const UserModel = mongoose.model<IUserDocument>("user", UserSchema);
+export const UserModel = mongoose.model<IUserSchema>("user", UserSchema);
