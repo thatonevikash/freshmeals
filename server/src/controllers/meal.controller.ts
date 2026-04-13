@@ -1,10 +1,15 @@
 import type { Request, Response } from "express";
 
 import { toMealDto } from "../dtos/meal.dto";
+import { toPlateDto } from "../dtos/plate.dto";
 
 import { MealModel as Meal } from "../models/meal.model";
 import { PlateModel as Plate } from "../models/plate.model";
-import { toPlateDto } from "../dtos/plate.dto";
+
+import {
+  PLATE_POPULATE_OPTIONS,
+  SELLER_POPULATE_OPTIONS,
+} from "../configs/populate-options";
 
 // -------------------------------------------------------------
 
@@ -34,10 +39,9 @@ export async function createMeal(req: Request, res: Response) {
       },
     });
 
-    const meal = await Meal.findById(newMeal.id).populate({
-      path: "seller_information.seller",
-      model: "user",
-    });
+    const meal = await Meal.findById(newMeal.id).populate(
+      SELLER_POPULATE_OPTIONS,
+    );
 
     if (!meal) {
       res.status(400).json({ message: "Unable to create meal in db" });
@@ -63,12 +67,8 @@ export async function getMeals(req: Request, res: Response) {
     const meals = await Meal.find({
       "seller_information.seller": req.userId,
     })
-      .populate({
-        path: "seller_information.seller",
-        model: "user",
-      })
-      .sort({ createdAt: "desc" })
-      .select("-createdAt -updatedAt");
+      .populate(SELLER_POPULATE_OPTIONS)
+      .sort({ createdAt: -1 });
 
     res.status(200).json(meals.map(toMealDto));
   } catch (error) {
@@ -83,10 +83,7 @@ export async function getMeal(req: Request, res: Response) {
   try {
     const { meal_id } = req.params;
 
-    const meal = await Meal.findById(meal_id).populate({
-      path: "seller_information.seller",
-      model: "user",
-    });
+    const meal = await Meal.findById(meal_id).populate(SELLER_POPULATE_OPTIONS);
 
     if (!meal) {
       res.status(404).json({ message: "Meal not found!" });
@@ -118,10 +115,7 @@ export async function updateMeal(req: Request, res: Response) {
 
     const updatedMeal = await Meal.findByIdAndUpdate(meal_id, updates, {
       new: true,
-    }).populate({
-      path: "seller_information.seller",
-      model: "user",
-    });
+    }).populate(SELLER_POPULATE_OPTIONS);
 
     if (!updatedMeal) {
       res.status(404).json({ message: "Meal not found" });
@@ -154,8 +148,8 @@ export async function deleteMeal(req: Request, res: Response) {
     }
 
     await Plate.updateMany(
-      { "plate_items.meal_id": meal.id },
-      { $pull: { plate_items: { meal_id: meal.id } } },
+      { plate_items: meal._id },
+      { $pull: { plate_items: meal._id } },
     );
 
     const deletedMeal = await Meal.findByIdAndDelete(meal_id);
@@ -220,15 +214,9 @@ export async function createMealPlate(req: Request, res: Response) {
       },
     });
 
-    const plate = await Plate.findById(newPlate.id)
-      .populate({
-        path: "seller_information.seller",
-        model: "user",
-      })
-      .populate({
-        path: "plate_items",
-        model: "meal",
-      });
+    const plate = await Plate.findById(newPlate.id).populate(
+      PLATE_POPULATE_OPTIONS,
+    );
 
     if (!plate) {
       res.status(404).json({ message: "Plate not found!" });
@@ -253,15 +241,7 @@ export async function getMealPlates(req: Request, res: Response) {
 
     const plates = await Plate.find({
       "seller_information.seller": req.userId,
-    })
-      .populate({
-        path: "seller_information.seller",
-        model: "user",
-      })
-      .populate({
-        path: "plate_items",
-        model: "meal",
-      });
+    }).populate(PLATE_POPULATE_OPTIONS);
 
     res.status(200).json(plates.map(toPlateDto));
   } catch (error) {
@@ -276,15 +256,9 @@ export async function getMealPlate(req: Request, res: Response) {
   try {
     const { plate_id } = req.params;
 
-    const plate = await Plate.findById(plate_id)
-      .populate({
-        path: "seller_information.seller",
-        model: "user",
-      })
-      .populate({
-        path: "plate_items",
-        model: "meal",
-      });
+    const plate = await Plate.findById(plate_id).populate(
+      PLATE_POPULATE_OPTIONS,
+    );
 
     if (!plate) {
       res.status(404).json({ message: "Plate not found!" });
@@ -316,15 +290,7 @@ export async function updateMealPlate(req: Request, res: Response) {
 
     const updatedPlate = await Plate.findByIdAndUpdate(plate_id, updates, {
       new: true,
-    })
-      .populate({
-        path: "seller_information.seller",
-        model: "user",
-      })
-      .populate({
-        path: "plate_items",
-        model: "meal",
-      });
+    }).populate(PLATE_POPULATE_OPTIONS);
 
     if (!updatedPlate) {
       res.status(404).json({ message: "Plate not found" });
@@ -351,15 +317,9 @@ export async function deleteMealPlate(req: Request, res: Response) {
       return;
     }
 
-    const deletedPlate = await Plate.findByIdAndDelete(plate_id)
-      .populate({
-        path: "seller_information.seller",
-        model: "user",
-      })
-      .populate({
-        path: "plate_items",
-        model: "meal",
-      });
+    const deletedPlate = await Plate.findByIdAndDelete(plate_id).populate(
+      PLATE_POPULATE_OPTIONS,
+    );
 
     if (!deletedPlate) {
       res.status(404).json({ message: "Plate not found" });
@@ -397,15 +357,7 @@ export async function addPlateItem(req: Request, res: Response) {
       plate_id,
       { $addToSet: { plate_items: { $each: [meal.id] } } },
       { new: true },
-    )
-      .populate({
-        path: "seller_information.seller",
-        model: "user",
-      })
-      .populate({
-        path: "plate_items",
-        model: "meal",
-      });
+    ).populate(PLATE_POPULATE_OPTIONS);
 
     if (!updatedPlate) {
       res.status(400).json({ message: "Plate updation failed" });
@@ -443,15 +395,7 @@ export async function removePlateItem(req: Request, res: Response) {
       plate_id,
       { $pull: { plate_items: meal.id } },
       { new: true },
-    )
-      .populate({
-        path: "seller_information.seller",
-        model: "user",
-      })
-      .populate({
-        path: "plate_items",
-        model: "meal",
-      });
+    ).populate(PLATE_POPULATE_OPTIONS);
 
     if (!updatedPlate) {
       res.status(400).json({ message: "Plate updation failed" });
@@ -479,23 +423,11 @@ export async function getMealCollection(req: Request, res: Response) {
 
     const meals = await Meal.find({
       "seller_information.seller": req.userId,
-    }).populate({
-      path: "seller_information.seller",
-      model: "user",
-      select: "id name avatar_url",
-    });
+    }).populate(SELLER_POPULATE_OPTIONS);
 
     const plates = await Plate.find({
       "seller_information.seller": req.userId,
-    })
-      .populate({
-        path: "seller_information.seller",
-        model: "user",
-      })
-      .populate({
-        path: "plate_items",
-        model: "meal",
-      });
+    }).populate(PLATE_POPULATE_OPTIONS);
 
     res
       .status(200)
@@ -531,19 +463,34 @@ export async function getAllMeals(req: Request, res: Response) {
     const page = Math.max(Number(req.query.page) || 1, 1);
 
     const meals = await Meal.find()
-      .populate({
-        path: "seller_information.seller",
-        model: "user",
-        select: "id name avatar_url",
-      })
+      .populate(SELLER_POPULATE_OPTIONS)
       .sort({ createdAt: -1 })
       .skip((page - 1) * size)
-      .limit(size)
-      .select("-createdAt -updatedAt");
+      .limit(size);
 
     res.status(200).json(meals.map(toMealDto));
   } catch (error) {
     res.status(500).json({ message: "Unable to fetch meals" });
+    return;
+  }
+}
+
+// -------------------------------------------------------------
+
+export async function getAllPlates(req: Request, res: Response) {
+  try {
+    const size = Math.min(Number(req.query.size) || 20, 100);
+    const page = Math.max(Number(req.query.page) || 1, 1);
+
+    const plates = await Plate.find()
+      .populate(PLATE_POPULATE_OPTIONS)
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * size)
+      .limit(size);
+
+    res.status(200).json(plates.map(toPlateDto));
+  } catch (error) {
+    res.status(500).json({ message: "Unable to fetch plates" });
     return;
   }
 }

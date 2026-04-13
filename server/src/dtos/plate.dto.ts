@@ -35,13 +35,13 @@ export function toPlateDto(plate: IPlateSchema): PlateDto {
   return {
     id: plate._id.toString(),
     plate_name: plate.plate_name,
-    plate_img_url: plate.plate_img_url,
     plate_items: plate_items.map((item) => ({
       id: item._id.toString(),
       meal_name: item.meal_name,
       meal_img_url: item.meal_img_url,
     })),
     plate_price: plate.plate_price,
+    plate_img_url: plate.plate_img_url,
     seller_information: toSellerInformationDto(seller_information),
   };
 }
