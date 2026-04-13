@@ -99,9 +99,11 @@ export async function getOrders(req: Request, res: Response) {
 
     if (!orders) {
       res.status(500).json({ message: "Unable to fetch orders" });
+      return;
     }
 
     res.status(200).json(orders.map(toOrderDto));
+    return;
   } catch (error) {
     res.status(500).json({ message: "Unable to fetch orders" });
     return;
