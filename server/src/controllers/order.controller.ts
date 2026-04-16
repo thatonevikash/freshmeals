@@ -6,7 +6,7 @@ import { OrderModel as Order, type IOrderItem } from "../models/order.model";
 
 import { toOrderDto } from "../dtos/order.dto";
 
-import { ORDER_POPULATE_OPTIONS } from "../configs/populate-options";
+import { POPULATE_OPTIONS } from "../configs/populate-options";
 
 // -------------------------------------------------------------
 
@@ -68,7 +68,7 @@ export async function placeOrder(req: Request, res: Response) {
     });
 
     const order = await Order.findById(newOrder._id).populate(
-      ORDER_POPULATE_OPTIONS,
+      POPULATE_OPTIONS.order,
     );
 
     if (!order) {
@@ -94,7 +94,7 @@ export async function getOrders(req: Request, res: Response) {
     }
 
     const orders = await Order.find({ customer: req.userId })
-      .populate(ORDER_POPULATE_OPTIONS)
+      .populate(POPULATE_OPTIONS.order)
       .sort({ createdAt: -1 });
 
     if (!orders) {
