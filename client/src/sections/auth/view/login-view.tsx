@@ -1,13 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+
+import Box from "@mui/material/Box";
+import Link from "@mui/material/Link";
+import Alert from "@mui/material/Alert";
+import Paper from "@mui/material/Paper";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import CircularProgress from "@mui/material/CircularProgress";
+
+import { RouterLink } from "@/routes";
 
 import { useAuthActions } from "@/actions/auth";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Container } from "@/components/core";
 
 // -----------------------------------------------------------------------
 
@@ -56,184 +63,257 @@ export function LogInView() {
   return (
     <Container
       maxWidth="lg"
-      className="min-h-[calc(100vh-72px)] items-center justify-center px-4"
-      disablePadding
+      sx={{
+        minHeight: "calc(100vh - 72px)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        px: 2,
+      }}
     >
-      <div className="flex items-center justify-center px-4">
-        <div className="w-full max-w-4xl flex rounded-2xl overflow-hidden border border-gray-200/60 shadow-sm">
-          {/* ── Left panel ── */}
-          <div className="hidden md:flex flex-1 relative bg-green-800 flex-col items-center justify-center p-12 overflow-hidden">
-            {/* Decorative blobs */}
-            <div className="absolute -top-15 -right-15 w-64 h-64 rounded-full bg-green-700/50" />
-            <div className="absolute -bottom-10 -left-10 w-48 h-48 rounded-full bg-amber-400/20" />
-            <div className="absolute top-[40%] -left-5 w-24 h-24 rounded-full bg-green-600/40" />
+      <Paper
+        sx={{
+          width: "100%",
+          maxWidth: 900,
+          display: "flex",
+          borderRadius: 3,
+          overflow: "hidden",
+          border: "1px solid",
+          borderColor: "grey.200",
+          boxShadow: 1,
+        }}
+      >
+        {/* ── Left Panel ── */}
+        <Box
+          sx={{
+            display: { xs: "none", md: "flex" },
+            flex: 1,
+            position: "relative",
+            bgcolor: "success.dark",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            p: 6,
+            overflow: "hidden",
+          }}
+        >
+          {/* Decorative blobs */}
+          <Box
+            sx={{
+              position: "absolute",
+              top: -60,
+              right: -60,
+              width: 260,
+              height: 260,
+              borderRadius: "50%",
+              bgcolor: "success.main",
+              opacity: 0.5,
+            }}
+          />
+          <Box
+            sx={{
+              position: "absolute",
+              bottom: -40,
+              left: -40,
+              width: 200,
+              height: 200,
+              borderRadius: "50%",
+              bgcolor: "warning.main",
+              opacity: 0.2,
+            }}
+          />
 
-            {/* Content */}
-            <div className="relative z-10 text-center flex flex-col items-center gap-6">
-              {/* Icon plate */}
-              <div className="w-20 h-20 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-4xl">
-                🥗
-              </div>
-
-              <div>
-                <h2 className="text-white text-3xl font-semibold tracking-tight leading-snug">
-                  Good food,
-                  <br />
-                  <span className="text-amber-300 italic font-light">
-                    every day.
-                  </span>
-                </h2>
-                <p className="text-green-200/80 text-sm font-light mt-3 max-w-xs leading-relaxed">
-                  Healthy chef-crafted meals delivered to your door. Fresh
-                  ingredients, zero compromise.
-                </p>
-              </div>
-
-              {/* Proof pill */}
-              <div className="flex items-center gap-2 bg-white/10 border border-white/15 rounded-full px-4 py-2">
-                <div className="flex -space-x-1.5">
-                  {["AN", "MK", "RS"].map((i) => (
-                    <div
-                      key={i}
-                      className="w-6 h-6 rounded-full bg-green-600 border-2 border-green-800 flex items-center justify-center text-[9px] font-medium text-white"
-                    >
-                      {i}
-                    </div>
-                  ))}
-                </div>
-                <span className="text-green-100 text-xs">
-                  10,000+ happy customers
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* ── Right panel ── */}
-          <div className="flex-1 bg-white flex flex-col justify-center px-8 py-12 md:px-12">
-            {/* Logo */}
-            <div className="flex items-center gap-2 mb-8">
-              <span className="w-2 h-2 rounded-full bg-amber-400" />
-              <span className="text-green-800 font-semibold text-base tracking-tight">
-                freshmeals
-              </span>
-            </div>
-
-            {/* Heading */}
-            <div className="mb-8">
-              <h1 className="text-2xl font-bold text-gray-900 tracking-tight">
-                Welcome back
-              </h1>
-              <p className="text-sm text-gray-400 font-light mt-1">
-                Sign in to your account to continue
-              </p>
-            </div>
-
-            {/* Error alert */}
-            {error && (
-              <div
-                role="alert"
-                aria-live="polite"
-                className="mb-5 flex items-start gap-2 bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-lg"
-              >
-                <span className="mt-0.5">⚠</span>
-                <span>{error}</span>
-              </div>
-            )}
-
-            {/* Form */}
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleLogin();
+          {/* Content */}
+          <Box
+            sx={{
+              textAlign: "center",
+              zIndex: 1,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Box
+              sx={{
+                width: 80,
+                height: 80,
+                borderRadius: 3,
+                bgcolor: "rgba(255,255,255,0.1)",
+                border: "1px solid rgba(255,255,255,0.2)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: 32,
+                mb: 3,
               }}
-              noValidate
-              className="flex flex-col gap-5"
             >
-              {/* Email */}
-              <div className="flex flex-col gap-1.5">
-                <Label
-                  htmlFor="email"
-                  className="text-sm font-medium text-gray-700"
+              🥗
+            </Box>
+
+            <Typography
+              sx={{
+                color: "common.white",
+                fontSize: "1.75rem",
+                fontWeight: 600,
+                lineHeight: 1.3,
+              }}
+            >
+              Good food,
+              <br />
+              <Box
+                component="span"
+                sx={{
+                  color: "warning.light",
+                  fontWeight: 300,
+                  fontStyle: "italic",
+                }}
+              >
+                every day.
+              </Box>
+            </Typography>
+
+            <Typography
+              sx={{
+                color: "rgba(200,230,200,0.8)",
+                fontSize: "0.875rem",
+                fontWeight: 300,
+                mt: 2,
+                maxWidth: 260,
+                mx: "auto",
+              }}
+            >
+              Healthy chef-crafted meals delivered to your door. Fresh
+              ingredients, zero compromise.
+            </Typography>
+          </Box>
+        </Box>
+
+        {/* ── Right Panel ── */}
+        <Box
+          sx={{
+            flex: 1,
+            bgcolor: "common.white",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            px: { xs: 3, md: 6 },
+            py: 6,
+          }}
+        >
+          {/* Logo */}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 4 }}>
+            <Box
+              sx={{
+                width: 8,
+                height: 8,
+                borderRadius: "50%",
+                bgcolor: "warning.main",
+              }}
+            />
+            <Typography sx={{ color: "success.dark", fontWeight: 600 }}>
+              freshmeals
+            </Typography>
+          </Box>
+
+          {/* Heading */}
+          <Box sx={{ mb: 4 }}>
+            <Typography variant="h5" sx={{ fontWeight: 700 }}>
+              Welcome back
+            </Typography>
+            <Typography
+              sx={{ color: "grey.400", fontSize: "0.875rem", fontWeight: 300 }}
+            >
+              Sign in to your account to continue
+            </Typography>
+          </Box>
+
+          {/* Error */}
+          {error && (
+            <Alert severity="error" sx={{ mb: 2 }}>
+              {error}
+            </Alert>
+          )}
+
+          {/* Form */}
+          <Box
+            component="form"
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleLogin();
+            }}
+            sx={{ display: "flex", flexDirection: "column", gap: 3 }}
+          >
+            <TextField
+              label="Email address"
+              name="email"
+              type="email"
+              value={credentials.email}
+              onChange={onChange}
+              onKeyDown={handleKeyDown}
+              fullWidth
+              required
+            />
+
+            <Box>
+              <Box
+                sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}
+              >
+                <Typography sx={{ fontSize: "0.875rem" }}>Password</Typography>
+                <Link
+                  component={RouterLink}
+                  href="/forgot-password"
+                  sx={{ fontSize: "0.75rem" }}
                 >
-                  Email address
-                </Label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  placeholder="you@example.com"
-                  value={credentials.email}
-                  onChange={onChange}
-                  onKeyDown={handleKeyDown}
-                  required
-                  aria-required="true"
-                  className="h-11 rounded-lg border-gray-200 focus:border-green-600 focus:ring-green-600/20 text-sm"
-                />
-              </div>
+                  Forgot password?
+                </Link>
+              </Box>
 
-              {/* Password */}
-              <div className="flex flex-col gap-1.5">
-                <div className="flex items-center justify-between">
-                  <Label
-                    htmlFor="password"
-                    className="text-sm font-medium text-gray-700"
-                  >
-                    Password
-                  </Label>
-                  <Link
-                    href="/forgot-password"
-                    className="text-xs text-green-700 hover:text-green-800 transition-colors"
-                  >
-                    Forgot password?
-                  </Link>
-                </div>
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  placeholder="Enter your password"
-                  value={credentials.password}
-                  onChange={onChange}
-                  onKeyDown={handleKeyDown}
-                  required
-                  aria-required="true"
-                  className="h-11 rounded-lg border-gray-200 focus:border-green-600 focus:ring-green-600/20 text-sm"
-                />
-              </div>
+              <TextField
+                name="password"
+                type="password"
+                value={credentials.password}
+                onChange={onChange}
+                onKeyDown={handleKeyDown}
+                fullWidth
+                required
+              />
+            </Box>
 
-              {/* Submit */}
-              <Button
-                type="submit"
-                disabled={loading}
-                aria-busy={loading}
-                className="h-11 w-full rounded-full bg-green-700 hover:bg-green-800 text-white font-medium text-sm mt-1 transition-colors"
-              >
-                {loading ? (
-                  <span className="flex items-center gap-2">
-                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    Signing in...
-                  </span>
-                ) : (
-                  "Sign in"
-                )}
-              </Button>
-            </form>
+            <Button
+              type="submit"
+              variant="contained"
+              disabled={loading}
+              sx={{
+                borderRadius: "999px",
+                py: 1.5,
+                bgcolor: "success.dark",
+                "&:hover": { bgcolor: "success.main" },
+              }}
+            >
+              {loading ? (
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  <CircularProgress size={16} color="inherit" />
+                  Signing in...
+                </Box>
+              ) : (
+                "Sign in"
+              )}
+            </Button>
+          </Box>
 
-            {/* Sign up link */}
-            <p className="text-sm text-gray-400 text-center mt-6">
-              Don't have an account?{" "}
-              <Link
-                href="/sign-up"
-                className="text-green-700 font-medium hover:text-green-800 transition-colors"
-              >
-                Sign up free →
-              </Link>
-            </p>
-          </div>
-        </div>
-      </div>
+          {/* Footer */}
+          <Typography sx={{ textAlign: "center", mt: 4, color: "grey.400" }}>
+            Don't have an account?{" "}
+            <Link
+              component={RouterLink}
+              href="/sign-up"
+              sx={{ fontWeight: 500 }}
+            >
+              Sign up free →
+            </Link>
+          </Typography>
+        </Box>
+      </Paper>
     </Container>
   );
 }

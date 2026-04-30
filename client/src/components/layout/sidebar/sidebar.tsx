@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { DashboardNavItem } from "./config-dashboard-nav";
 import { LucideIcon } from "lucide-react";
 import { useAuthActions } from "@/actions/auth";
-import { useAuth } from "@/sections/auth/auth-provider";
+import { useAuth } from "@/auth/hooks/use-auth";
 
 // -----------------------------------------------------------------------
 

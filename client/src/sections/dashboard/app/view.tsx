@@ -1,7 +1,7 @@
 "use client";
 
-import { DashboardContent } from "@/components/core";
-import { useAuth } from "@/sections/auth/auth-provider";
+import { useAuth } from "@/auth/hooks/use-auth";
+import { DashboardContent } from "@/components/layout/main";
 
 // -----------------------------------------------------------------------
 

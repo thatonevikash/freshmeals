@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-// -----------------------------------------------------------------------
+// -------------------------------------------------------------
 
 export function Main({
   children,
@@ -16,7 +16,19 @@ export function Main({
   );
 }
 
-// -----------------------------------------------------------------------
+// -------------------------------------------------------------
+
+export function DashboardContent({
+  children,
+  disablePadding,
+}: {
+  children: React.ReactNode;
+  disablePadding?: boolean;
+}) {
+  return <div className="p-6 min-w-full">{children}</div>;
+}
+
+// -------------------------------------------------------------
 
 export interface ContainerProps {
   children: React.ReactNode;

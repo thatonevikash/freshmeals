@@ -1,8 +1,33 @@
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+
+// -------------------------------------------------------------
+
 export function Logo() {
   return (
-    <p className="font-serif text-xl font-semibold tracking-tight text-green-800 flex items-center gap-2">
-      <span className="w-2 h-2 rounded-full bg-amber-400 inline-block" />
+    <Typography
+      component="p"
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        gap: 1,
+        fontSize: "1.25rem",
+        fontWeight: 600,
+        letterSpacing: "-0.01em",
+        color: "success.dark",
+      }}
+    >
+      <Box
+        component="span"
+        sx={{
+          width: 8, // w-2
+          height: 8,
+          borderRadius: "50%",
+          bgcolor: "warning.main", // amber-400 equivalent
+          display: "inline-block",
+        }}
+      />
       freshmeals
-    </p>
+    </Typography>
   );
 }

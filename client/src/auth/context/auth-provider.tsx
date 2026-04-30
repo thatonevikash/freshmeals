@@ -4,7 +4,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 import axios from "@/lib/axios";
 import { getCookie, deleteCookie } from "cookies-next";
 
-// -----------------------------------------------------------------------
+// -------------------------------------------------------------
 
 interface User {
   username: string;
@@ -22,16 +22,18 @@ interface AuthContextType {
   isLoading: boolean;
 }
 
-// -----------------------------------------------------------------------
+// -------------------------------------------------------------
 
-const AuthContext = createContext<AuthContextType>({
+export const AuthContext = createContext<AuthContextType>({
   user: null,
   login: (data: any) => {},
   logout: () => {},
   isLoading: true,
 });
 
-// -----------------------------------------------------------------------
+export const AuthConsumer = AuthContext.Consumer;
+
+// -------------------------------------------------------------
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -79,7 +81,3 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     </AuthContext.Provider>
   );
 }
-
-// -----------------------------------------------------------------------
-
-export const useAuth = () => useContext(AuthContext);

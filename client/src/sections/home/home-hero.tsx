@@ -1,8 +1,12 @@
-"use client";
+import Box from "@mui/material/Box";
+import Link from "@mui/material/Link";
+import Button from "@mui/material/Button";
+import { alpha } from "@mui/material/styles";
 
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { useAuth } from "../auth/auth-provider";
+import { useAuth } from "@/auth/hooks/use-auth";
+import Typography from "@mui/material/Typography";
+
+import { RouterLink } from "@/routes";
 
 // -----------------------------------------------------------------------
 
@@ -10,80 +14,243 @@ export function HomeHero() {
   const { user } = useAuth();
 
   return (
-    <section className="relative min-h-[calc(100vh-72px)] flex items-center justify-center overflow-hidden ">
+    <Box
+      component="section"
+      sx={{
+        position: "relative",
+        minHeight: "calc(100vh - 72px)",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        overflow: "hidden",
+      }}
+    >
       {/* Background decoration */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute top-[-10%] right-[-5%] w-125 h-125 rounded-full bg-green-100/60 blur-3xl" />
-        <div className="absolute bottom-[-10%] left-[-5%] w-100 h-100 rounded-full bg-amber-100/50 blur-3xl" />
-      </div>
+      <Box sx={{ position: "absolute", inset: 0, zIndex: -10 }}>
+        <Box
+          sx={(theme) => ({
+            position: "absolute",
+            top: "-10%",
+            right: "-5%",
+            width: 125,
+            height: 125,
+            borderRadius: "100%",
+            bgcolor: alpha(theme.palette.success.main, 0.6),
+            filter: "blur(64px)",
+          })}
+        />
+        <Box
+          sx={(theme) => ({
+            position: "absolute",
+            bottom: "-10%",
+            left: "-5%",
+            width: 125,
+            height: 125,
+            borderRadius: "100%",
+            bgcolor: alpha(theme.palette.warning.main, 0.6),
+            filter: "blur(64px)",
+          })}
+        />
+      </Box>
 
-      <div className="max-w-4xl mx-auto px-6 text-center flex flex-col items-center gap-6">
+      <Box
+        sx={{
+          maxWidth: "56rem",
+          mx: "auto",
+          textAlign: "center",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "1.5rem",
+        }}
+      >
         {/* Badge */}
-        <span className="inline-flex items-center gap-2 bg-green-50 border border-green-200 text-green-700 text-xs font-medium px-4 py-1.5 rounded-full">
+        <Box
+          component="span"
+          sx={(theme) => ({
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 1,
+            bgcolor: alpha(theme.palette.success.light, 0.12),
+            border: `1px solid ${alpha(theme.palette.success.main, 0.08)}`,
+            color: "success.dark",
+            fontSize: 12,
+            fontWeight: 500,
+            px: 1.25,
+            py: 0.75,
+            borderRadius: 4,
+          })}
+        >
           <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
           Fresh meals, delivered daily
-        </span>
+        </Box>
 
         {/* Heading */}
-        <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-gray-900 leading-[1.08]">
+        <Typography
+          component="h1"
+          sx={{
+            fontWeight: 700,
+            letterSpacing: "-0.02em",
+            lineHeight: 1.08,
+            color: "grey.900",
+            fontSize: {
+              xs: "2.5rem", // ~text-4xl
+              md: "4.5rem", // ~text-7xl
+            },
+          }}
+        >
           Fresh. Healthy.{" "}
-          <span className="text-green-700 italic font-light">Affordable.</span>
+          <Box
+            component="span"
+            sx={{
+              color: "success.dark",
+              fontStyle: "italic",
+              fontWeight: 300,
+            }}
+          >
+            Affordable.
+          </Box>
           <br />
-          <span className="text-gray-500 font-light text-4xl md:text-6xl">
+          <Box
+            component="span"
+            sx={{
+              color: "grey.500",
+              fontWeight: 300,
+              fontSize: {
+                xs: "2rem", // ~text-4xl
+                md: "3.75rem", // ~text-6xl
+              },
+            }}
+          >
             Meals at your doorstep.
-          </span>
-        </h1>
+          </Box>
+        </Typography>
 
         {/* Subtext */}
-        <p className="text-gray-500 text-lg font-light max-w-xl leading-relaxed">
+        <Typography
+          sx={{
+            color: "grey.500",
+            fontSize: "1.125rem", // ~text-lg
+            fontWeight: 300,
+            maxWidth: "36rem", // ~max-w-xl
+            lineHeight: 1.625, // ~leading-relaxed
+          }}
+        >
           freshmeals provides healthy meals at your doorstep at an affordable
           price.{" "}
           <Link
+            component={RouterLink}
             href="/login"
-            className="text-green-700 underline underline-offset-4 hover:text-green-800 transition-colors"
+            sx={{
+              color: "success.dark",
+              textDecoration: "underline",
+              textUnderlineOffset: "4px",
+              transition: "color 0.2s ease",
+              "&:hover": {
+                color: "success.main",
+              },
+            }}
           >
             Order now →
           </Link>
-        </p>
+        </Typography>
 
         {/* Buttons */}
-        <div className="flex items-center gap-3 mt-2">
+        <Box sx={{ display: "flex", alignItems: "center", gap: 2, mt: 2 }}>
           <Button
-            asChild
-            variant="outline"
-            className="rounded-full px-7 py-5 text-sm font-medium border-gray-300 hover:border-gray-400 hover:bg-white"
+            component={RouterLink}
+            href={user ? "/dashboard" : "/login"}
+            variant="outlined"
+            sx={{
+              borderRadius: "999px",
+              px: 3.5,
+              py: 1.5,
+              fontSize: "0.875rem",
+              fontWeight: 500,
+              borderColor: "grey.300",
+              color: "text.primary",
+              "&:hover": {
+                borderColor: "grey.400",
+                bgcolor: "common.white",
+              },
+            }}
           >
-            <Link href={user ? "/dashboard" : "/login"}>
-              {user ? "Get in" : "Log in"}
-            </Link>
+            {user ? "Get in" : "Log in"}
           </Button>
 
           <Button
-            asChild
-            className="rounded-full px-7 py-5 text-sm font-medium bg-green-700 hover:bg-green-800 text-white shadow-none"
+            component={RouterLink}
+            href="/sign-up"
+            variant="contained"
+            sx={{
+              borderRadius: "999px",
+              px: 3.5,
+              py: 1.5,
+              fontSize: "0.875rem",
+              fontWeight: 500,
+              bgcolor: "success.dark",
+              boxShadow: "none",
+              "&:hover": {
+                bgcolor: "success.main",
+                boxShadow: "none",
+              },
+            }}
           >
-            <Link href="/sign-up">Sign up free →</Link>
+            Sign up free →
           </Button>
-        </div>
+        </Box>
 
         {/* Social proof */}
-        <div className="flex items-center gap-3 mt-4 text-sm text-gray-400">
-          <div className="flex -space-x-2">
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
+            mt: 4,
+            fontSize: "0.875rem", // text-sm
+            color: "grey.400",
+          }}
+        >
+          {/* Avatar group */}
+          <Box
+            sx={{ display: "flex", "& > *:not(:first-of-type)": { ml: -1 } }}
+          >
             {["AN", "MK", "RS"].map((initials) => (
-              <div
+              <Box
                 key={initials}
-                className="w-7 h-7 rounded-full bg-green-100 border-2 border-white flex items-center justify-center text-[10px] font-medium text-green-700"
+                sx={{
+                  width: 28, // w-7
+                  height: 28,
+                  borderRadius: "50%",
+                  bgcolor: "success.light",
+                  border: "2px solid",
+                  borderColor: "common.white",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: "10px",
+                  fontWeight: 500,
+                  color: "success.dark",
+                }}
               >
                 {initials}
-              </div>
+              </Box>
             ))}
-          </div>
-          <span>
+          </Box>
+
+          {/* Text */}
+          <Typography
+            component="span"
+            sx={{ fontSize: "inherit", color: "inherit" }}
+          >
             Trusted by{" "}
-            <span className="text-gray-600 font-medium">10,000+</span> customers
-          </span>
-        </div>
-      </div>
-    </section>
+            <Box component="span" sx={{ color: "grey.600", fontWeight: 500 }}>
+              10,000+
+            </Box>{" "}
+            customers
+          </Typography>
+        </Box>
+      </Box>
+    </Box>
   );
 }

@@ -1,15 +1,10 @@
 import "@/globals.css";
-import { AuthProvider } from "@/sections/auth/auth-provider";
+import { AuthProvider } from "@/auth/context/auth-provider";
+
 import { ThemeProvider } from "@/theme/theme-provider";
+import { InitColorSchemeScript } from "@/theme/color-scheme-script";
 
-import { Outfit, Nunito_Sans } from "next/font/google";
-
-const fontSans = Outfit({ subsets: ["latin"], variable: "--font-sans" });
-
-const fontHeading = Nunito_Sans({
-  subsets: ["latin"],
-  variable: "--font-heading",
-});
+// -------------------------------------------------------------
 
 export default function RootLayout({
   children,
@@ -17,12 +12,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className={fontSans.variable + " " + fontHeading.variable}
-    >
-      <body className="antialiased">
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        <InitColorSchemeScript />
+
         <AuthProvider>
           <ThemeProvider>{children}</ThemeProvider>
         </AuthProvider>

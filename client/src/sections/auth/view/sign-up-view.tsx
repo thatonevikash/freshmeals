@@ -1,13 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+
+import Box from "@mui/material/Box";
+import Link from "@mui/material/Link";
+import Alert from "@mui/material/Alert";
+import Paper from "@mui/material/Paper";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import CircularProgress from "@mui/material/CircularProgress";
 
 import { useAuthActions } from "@/actions/auth";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Container } from "@/components/core";
+import { RouterLink } from "@/routes";
 
 // -----------------------------------------------------------------------
 
@@ -71,223 +77,305 @@ export function SignUpView() {
   return (
     <Container
       maxWidth="lg"
-      disablePadding
-      className="min-h-[calc(100vh-72px)] items-center justify-center px-4"
+      sx={{
+        minHeight: "calc(100vh - 72px)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        px: 2,
+      }}
     >
-      <div className="w-full max-w-4xl flex rounded-2xl overflow-hidden border border-gray-200/60 shadow-sm">
-        {/* ── Left panel ── */}
-        <div className="hidden md:flex flex-1 relative bg-green-800 flex-col items-center justify-center p-12 overflow-hidden">
+      <Paper
+        sx={{
+          width: "100%",
+          maxWidth: 900,
+          display: "flex",
+          borderRadius: 3,
+          overflow: "hidden",
+          border: "1px solid",
+          borderColor: "grey.200",
+          boxShadow: 1,
+        }}
+      >
+        {/* ── Left Panel ── */}
+        <Box
+          sx={{
+            display: { xs: "none", md: "flex" },
+            flex: 1,
+            position: "relative",
+            bgcolor: "success.dark",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            p: 6,
+            overflow: "hidden",
+          }}
+        >
           {/* Decorative blobs */}
-          <div className="absolute -top-15 -right-15 w-64 h-64 rounded-full bg-green-700/50" />
-          <div className="absolute -bottom-10 -left-10 w-48 h-48 rounded-full bg-amber-400/20" />
-          <div className="absolute top-[40%] -left-5 w-24 h-24 rounded-full bg-green-600/40" />
+          <Box
+            sx={{
+              position: "absolute",
+              top: -60,
+              right: -60,
+              width: 260,
+              height: 260,
+              borderRadius: "50%",
+              bgcolor: "success.main",
+              opacity: 0.5,
+            }}
+          />
+          <Box
+            sx={{
+              position: "absolute",
+              bottom: -40,
+              left: -40,
+              width: 200,
+              height: 200,
+              borderRadius: "50%",
+              bgcolor: "warning.main",
+              opacity: 0.2,
+            }}
+          />
 
           {/* Content */}
-          <div className="relative z-10 text-center flex flex-col items-center gap-6">
-            <div className="w-20 h-20 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-4xl">
+          <Box
+            sx={{
+              textAlign: "center",
+              zIndex: 1,
+              display: "flex",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
+          >
+            <Box
+              sx={{
+                width: 80,
+                height: 80,
+                borderRadius: 3,
+                bgcolor: "rgba(255,255,255,0.1)",
+                border: "1px solid rgba(255,255,255,0.2)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: 32,
+                mb: 3,
+              }}
+            >
               🍱
-            </div>
+            </Box>
 
-            <div>
-              <h2 className="text-white text-3xl font-semibold tracking-tight leading-snug">
-                Start eating
-                <br />
-                <span className="text-amber-300 italic font-light">
-                  better today.
-                </span>
-              </h2>
-              <p className="text-green-200/80 text-sm font-light mt-3 max-w-xs leading-relaxed">
-                Join thousands of people who trust freshmeals for nutritious,
-                affordable meals every day.
-              </p>
-            </div>
+            <Typography
+              sx={{
+                color: "common.white",
+                fontSize: "1.75rem",
+                fontWeight: 600,
+                lineHeight: 1.3,
+              }}
+            >
+              Start eating
+              <br />
+              <Box
+                component="span"
+                sx={{
+                  color: "warning.light",
+                  fontWeight: 300,
+                  fontStyle: "italic",
+                }}
+              >
+                better today.
+              </Box>
+            </Typography>
+
+            <Typography
+              sx={{
+                color: "rgba(200,230,200,0.8)",
+                fontSize: "0.875rem",
+                fontWeight: 300,
+                mt: 2,
+                maxWidth: 260,
+                mx: "auto",
+              }}
+            >
+              Join thousands of people who trust freshmeals for nutritious,
+              affordable meals every day.
+            </Typography>
 
             {/* Feature list */}
-            <ul className="flex flex-col gap-3 w-full max-w-xs">
+            <Box
+              sx={{
+                mt: 4,
+                display: "flex",
+                flexDirection: "column",
+                gap: 2,
+                maxWidth: 260,
+              }}
+            >
               {[
                 { icon: "🌿", text: "Fresh, locally sourced ingredients" },
                 { icon: "⚡", text: "Delivered in under 30 minutes" },
                 { icon: "💚", text: "₹200 off your first order" },
               ].map((item) => (
-                <li
+                <Box
                   key={item.text}
-                  className="flex items-center gap-3 bg-white/10 border border-white/15 rounded-xl px-4 py-2.5"
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 2,
+                    bgcolor: "rgba(255,255,255,0.1)",
+                    border: "1px solid rgba(255,255,255,0.15)",
+                    borderRadius: 2,
+                    px: 2,
+                    py: 1.5,
+                  }}
                 >
-                  <span className="text-base">{item.icon}</span>
-                  <span className="text-green-100 text-xs font-light">
+                  <Typography>{item.icon}</Typography>
+                  <Typography
+                    sx={{
+                      color: "rgba(240,255,240,0.9)",
+                      fontSize: "0.75rem",
+                      fontWeight: 300,
+                    }}
+                  >
                     {item.text}
-                  </span>
-                </li>
+                  </Typography>
+                </Box>
               ))}
-            </ul>
-          </div>
-        </div>
+            </Box>
+          </Box>
+        </Box>
 
-        {/* ── Right panel ── */}
-        <div className="flex-1 bg-white flex flex-col justify-center px-8 py-10 md:px-12">
+        {/* ── Right Panel ── */}
+        <Box
+          sx={{
+            flex: 1,
+            bgcolor: "common.white",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            px: { xs: 3, md: 6 },
+            py: 5,
+          }}
+        >
           {/* Logo */}
-          <div className="flex items-center gap-2 mb-6">
-            <span className="w-2 h-2 rounded-full bg-amber-400" />
-            <span className="text-green-800 font-semibold text-base tracking-tight">
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 3 }}>
+            <Box
+              sx={{
+                width: 8,
+                height: 8,
+                borderRadius: "50%",
+                bgcolor: "warning.main",
+              }}
+            />
+            <Typography sx={{ color: "success.dark", fontWeight: 600 }}>
               freshmeals
-            </span>
-          </div>
+            </Typography>
+          </Box>
 
           {/* Heading */}
-          <div className="mb-6">
-            <h1 className="text-2xl font-bold text-gray-900 tracking-tight">
+          <Box sx={{ mb: 3 }}>
+            <Typography variant="h5" sx={{ fontWeight: 700 }}>
               Create an account
-            </h1>
-            <p className="text-sm text-gray-400 font-light mt-1">
-              Free to join. No credit card required.
-            </p>
-          </div>
-
-          {/* Error alert */}
-          {error && (
-            <div
-              role="alert"
-              aria-live="polite"
-              className="mb-5 flex items-start gap-2 bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-lg"
+            </Typography>
+            <Typography
+              sx={{ color: "grey.400", fontSize: "0.875rem", fontWeight: 300 }}
             >
-              <span className="mt-0.5">⚠</span>
-              <span>{error}</span>
-            </div>
+              Free to join. No credit card required.
+            </Typography>
+          </Box>
+
+          {/* Error */}
+          {error && (
+            <Alert severity="error" sx={{ mb: 2 }}>
+              {error}
+            </Alert>
           )}
 
           {/* Form */}
-          <form
+          <Box
+            component="form"
             onSubmit={(e) => {
               e.preventDefault();
               handleSignUp();
             }}
-            noValidate
-            className="flex flex-col gap-4"
+            sx={{ display: "flex", flexDirection: "column", gap: 2 }}
           >
-            {/* Username */}
-            <div className="flex flex-col gap-1.5">
-              <Label
-                htmlFor="username"
-                className="text-sm font-medium text-gray-700"
-              >
-                Username
-              </Label>
-              <Input
-                id="username"
-                name="username"
-                type="text"
-                autoComplete="username"
-                placeholder="johndoe"
-                value={credentials.username}
+            <TextField
+              label="Username"
+              name="username"
+              value={credentials.username}
+              onChange={onChange}
+              fullWidth
+              required
+            />
+
+            <TextField
+              label="Email address"
+              name="email"
+              type="email"
+              value={credentials.email}
+              onChange={onChange}
+              fullWidth
+              required
+            />
+
+            {/* Password row */}
+            <Box sx={{ display: "flex", gap: 2 }}>
+              <TextField
+                label="Password"
+                name="password"
+                type="password"
+                value={credentials.password}
                 onChange={onChange}
+                fullWidth
                 required
-                aria-required="true"
-                className="h-11 rounded-lg border-gray-200 focus:border-green-600 focus:ring-green-600/20 text-sm"
               />
-            </div>
 
-            {/* Email */}
-            <div className="flex flex-col gap-1.5">
-              <Label
-                htmlFor="email"
-                className="text-sm font-medium text-gray-700"
-              >
-                Email address
-              </Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                placeholder="you@example.com"
-                value={credentials.email}
+              <TextField
+                label="Confirm password"
+                name="confirmPassword"
+                type="password"
+                value={credentials.confirmPassword}
                 onChange={onChange}
+                fullWidth
                 required
-                aria-required="true"
-                className="h-11 rounded-lg border-gray-200 focus:border-green-600 focus:ring-green-600/20 text-sm"
               />
-            </div>
+            </Box>
 
-            {/* Password row — side by side */}
-            <div className="grid grid-cols-2 gap-3">
-              <div className="flex flex-col gap-1.5">
-                <Label
-                  htmlFor="password"
-                  className="text-sm font-medium text-gray-700"
-                >
-                  Password
-                </Label>
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="new-password"
-                  placeholder="Min. 8 characters"
-                  value={credentials.password}
-                  onChange={onChange}
-                  required
-                  aria-required="true"
-                  aria-describedby="password-hint"
-                  className="h-11 rounded-lg border-gray-200 focus:border-green-600 focus:ring-green-600/20 text-sm"
-                />
-              </div>
-
-              <div className="flex flex-col gap-1.5">
-                <Label
-                  htmlFor="confirmPassword"
-                  className="text-sm font-medium text-gray-700"
-                >
-                  Confirm password
-                </Label>
-                <Input
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  type="password"
-                  autoComplete="new-password"
-                  placeholder="Repeat password"
-                  value={credentials.confirmPassword}
-                  onChange={onChange}
-                  required
-                  aria-required="true"
-                  className="h-11 rounded-lg border-gray-200 focus:border-green-600 focus:ring-green-600/20 text-sm"
-                />
-              </div>
-            </div>
-
-            <p id="password-hint" className="text-xs text-gray-400 -mt-1">
+            <Typography sx={{ fontSize: "0.75rem", color: "grey.400" }}>
               Must be at least 8 characters long.
-            </p>
+            </Typography>
 
-            {/* Submit */}
             <Button
               type="submit"
+              variant="contained"
               disabled={loading}
-              aria-busy={loading}
-              className="h-11 w-full rounded-full bg-green-700 hover:bg-green-800 text-white font-medium text-sm mt-1 transition-colors"
+              sx={{
+                borderRadius: "999px",
+                py: 1.5,
+                bgcolor: "success.dark",
+                "&:hover": { bgcolor: "success.main" },
+              }}
             >
               {loading ? (
-                <span className="flex items-center gap-2">
-                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  <CircularProgress size={16} color="inherit" />
                   Creating account...
-                </span>
+                </Box>
               ) : (
                 "Create account →"
               )}
             </Button>
-          </form>
+          </Box>
 
-          {/* Log in link */}
-          <p className="text-sm text-gray-400 text-center mt-6">
+          {/* Footer */}
+          <Typography sx={{ textAlign: "center", mt: 4, color: "grey.400" }}>
             Already have an account?{" "}
-            <Link
-              href="/login"
-              className="text-green-700 font-medium hover:text-green-800 transition-colors"
-            >
+            <Link component={RouterLink} href="/login" sx={{ fontWeight: 500 }}>
               Sign in →
             </Link>
-          </p>
-        </div>
-      </div>
+          </Typography>
+        </Box>
+      </Paper>
     </Container>
   );
 }

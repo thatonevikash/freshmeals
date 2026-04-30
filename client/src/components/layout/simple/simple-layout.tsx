@@ -3,7 +3,7 @@ import { Header } from "../header";
 
 // -----------------------------------------------------------------------
 
-export function MainLayout({ children }: { children: React.ReactNode }) {
+export function SimpleLayout({ children }: { children: React.ReactNode }) {
   return (
     <div>
       <Header />

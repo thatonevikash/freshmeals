@@ -1,10 +1,11 @@
 "use client";
 
+import { setCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
+
 import axios, { endpoints } from "@/lib/axios";
 
-import { useRouter } from "next/navigation";
-import { setCookie } from "cookies-next";
-import { useAuth } from "@/sections/auth/auth-provider";
+import { useAuth } from "@/auth/hooks/use-auth";
 
 // -------------------------------------------------------------
 
