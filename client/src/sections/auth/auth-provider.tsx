@@ -7,7 +7,7 @@ import { getCookie, deleteCookie } from "cookies-next";
 // -----------------------------------------------------------------------
 
 interface User {
-  username: string;
+  name: string;
   email: string;
   mobile_no: string;
   address: string;
@@ -50,7 +50,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           console.log(res);
 
           setUser({
-            username: res.data.username,
+            name: res.data.name,
             email: res.data.email,
             mobile_no: res.data.mobile_no,
             address: res.data.address,

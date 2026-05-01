@@ -65,7 +65,7 @@ function SidebarUserProfile() {
   const { user } = useAuth();
   const Auth = useAuthActions();
 
-  const initials = user?.username.slice(0, 2).toUpperCase();
+  const initials = user?.name?.slice(0, 2).toUpperCase();
 
   const handleLogout = async () => {
     try {
@@ -89,7 +89,7 @@ function SidebarUserProfile() {
         {/* User info */}
         <div className="flex flex-col min-w-0 flex-1">
           <span className="text-sm font-medium text-gray-800 truncate leading-tight">
-            {user?.username}
+            {user?.name}
           </span>
           <span className="text-xs text-gray-400 truncate leading-tight">
             {user?.email}
