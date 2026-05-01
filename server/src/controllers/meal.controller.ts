@@ -1,12 +1,12 @@
 import type { Request, Response } from "express";
 
-import { toMealDto } from "../dtos/meal.dto";
-import { toPlateDto } from "../dtos/plate.dto";
+import { toMealDto } from "../dtos/meal.dto.js";
+import { toPlateDto } from "../dtos/plate.dto.js";
 
-import { MealModel as Meal } from "../models/meal.model";
-import { PlateModel as Plate } from "../models/plate.model";
+import { MealModel as Meal } from "../models/meal.model.js";
+import { PlateModel as Plate } from "../models/plate.model.js";
 
-import { POPULATE_OPTIONS } from "../configs/populate-options";
+import { POPULATE_OPTIONS } from "../configs/populate-options.js";
 
 // -------------------------------------------------------------
 

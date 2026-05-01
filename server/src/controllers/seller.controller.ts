@@ -1,9 +1,9 @@
 import type { Request, Response } from "express";
 
-import { UserModel as User } from "../models/user.model";
+import { UserModel as User } from "../models/user.model.js";
 
-import { toUserDto } from "../dtos/user.dto";
-import { toSellerDto } from "../dtos/seller.dto";
+import { toUserDto } from "../dtos/user.dto.js";
+import { toSellerDto } from "../dtos/seller.dto.js";
 
 // -------------------------------------------------------------
 

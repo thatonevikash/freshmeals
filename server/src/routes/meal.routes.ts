@@ -1,6 +1,6 @@
 import { Router } from "express";
-import * as Auth from "../middlewares/auth.middleware";
-import * as Controller from "../controllers/meal.controller";
+import * as Auth from "../middlewares/auth.middleware.js";
+import * as Controller from "../controllers/meal.controller.js";
 
 // -------------------------------------------------------------
 

@@ -1,11 +1,11 @@
-import type { IMealSchema } from "../models/meal.model";
-import type { SellerLevel } from "../models/seller.model";
-import type { IUserSchema } from "../models/user.model";
+import type { IMealSchema } from "../models/meal.model.js";
+import type { SellerLevel } from "../models/seller.model.js";
+import type { IUserSchema } from "../models/user.model.js";
 
 import {
   toSellerInformationDto,
   type SellerInformationDto,
-} from "./seller.dto";
+} from "./seller.dto.js";
 
 // -------------------------------------------------------------
 

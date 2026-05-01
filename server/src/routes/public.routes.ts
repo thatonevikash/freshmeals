@@ -1,5 +1,5 @@
 import { Router } from "express";
-import * as Controller from "../controllers/meal.controller";
+import * as Controller from "../controllers/meal.controller.js";
 
 // -------------------------------------------------------------
 

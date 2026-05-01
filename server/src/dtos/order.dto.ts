@@ -2,14 +2,14 @@ import type {
   IOrderItem,
   IOrderSchema,
   OrderStatus,
-} from "../models/order.model";
-import type { IUserSchema } from "../models/user.model";
-import type { IMealSchema } from "../models/meal.model";
-import type { IPlateSchema } from "../models/plate.model";
+} from "../models/order.model.js";
+import type { IUserSchema } from "../models/user.model.js";
+import type { IMealSchema } from "../models/meal.model.js";
+import type { IPlateSchema } from "../models/plate.model.js";
 
-import type { UserDto } from "./user.dto";
-import { toMealDto, type MealDto } from "./meal.dto";
-import { toPlateDto, type PlateDto } from "./plate.dto";
+import type { UserDto } from "./user.dto.js";
+import { toMealDto, type MealDto } from "./meal.dto.js";
+import { toPlateDto, type PlateDto } from "./plate.dto.js";
 
 // -------------------------------------------------------------
 

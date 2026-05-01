@@ -1,7 +1,7 @@
-import { ENV } from "./configs/env-variables";
+import { ENV } from "./configs/env-variables.js";
 
-import { app } from "./app";
-import { connectDB } from "./database";
+import { app } from "./app.js";
+import { connectDB } from "./database/index.js";
 
 // -------------------------------------------------------------
 

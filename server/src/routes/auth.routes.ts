@@ -1,5 +1,5 @@
 import { Router } from "express";
-import * as Auth from "../controllers/auth.controller";
+import * as Auth from "../controllers/auth.controller.js";
 
 // -------------------------------------------------------------
 

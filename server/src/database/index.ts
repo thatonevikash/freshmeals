@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { ENV } from "../configs/env-variables";
-import { DB_NAME } from "../configs/constants";
+import { ENV } from "../configs/env-variables.js";
+import { DB_NAME } from "../configs/constants.js";
 
 // -------------------------------------------------------------
 

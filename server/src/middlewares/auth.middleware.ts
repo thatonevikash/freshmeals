@@ -1,9 +1,9 @@
 import { Types } from "mongoose";
 import type { Request, Response, NextFunction } from "express";
 
-import { verifyToken } from "../utils/jwt";
+import { verifyToken } from "../utils/jwt.js";
 
-import { UserModel as User } from "../models/user.model";
+import { UserModel as User } from "../models/user.model.js";
 
 // -------------------------------------------------------------
 

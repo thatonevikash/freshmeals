@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import * as Controller from "../controllers/order.controller";
+import * as Controller from "../controllers/order.controller.js";
 
 // -------------------------------------------------------------
 

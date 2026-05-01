@@ -1,7 +1,7 @@
 import express, { type Application } from "express";
 import cors from "cors";
 
-import routes from "./routes/root";
+import routes from "./routes/root.js";
 
 // -------------------------------------------------------------
 

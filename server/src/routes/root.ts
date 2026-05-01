@@ -1,14 +1,14 @@
 import { Router } from "express";
 
-import * as Auth from "../middlewares/auth.middleware";
+import * as Auth from "../middlewares/auth.middleware.js";
 
-import userRoutes from "./user.routes";
-import mealRoutes from "./meal.routes";
-import authRoutes from "./auth.routes";
-import orderRoutes from "./order.routes";
-import sellerRoutes from "./seller.routes";
+import userRoutes from "./user.routes.js";
+import mealRoutes from "./meal.routes.js";
+import authRoutes from "./auth.routes.js";
+import orderRoutes from "./order.routes.js";
+import sellerRoutes from "./seller.routes.js";
 
-import publicRoutes from "./public.routes";
+import publicRoutes from "./public.routes.js";
 
 // -------------------------------------------------------------
 

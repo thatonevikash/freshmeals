@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
-import { UserModel as User } from "../models/user.model";
+import { UserModel as User } from "../models/user.model.js";
 
-import { toUserDto } from "../dtos/user.dto";
+import { toUserDto } from "../dtos/user.dto.js";
 
 // -------------------------------------------------------------
 

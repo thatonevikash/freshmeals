@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
-import { SellerSchema, type ISeller } from "./seller.model";
+import { SellerSchema, type ISeller } from "./seller.model.js";
 
 // -------------------------------------------------------------
 

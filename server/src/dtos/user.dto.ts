@@ -1,4 +1,4 @@
-import type { IUserSchema } from "../models/user.model";
+import type { IUserSchema } from "../models/user.model.js";
 
 // -------------------------------------------------------------
 

@@ -1,6 +1,6 @@
-import type { UserDto } from "./user.dto";
-import type { IUserSchema } from "../models/user.model";
-import type { SellerLevel } from "../models/seller.model";
+import type { UserDto } from "./user.dto.js";
+import type { IUserSchema } from "../models/user.model.js";
+import type { SellerLevel } from "../models/seller.model.js";
 
 // -------------------------------------------------------------
 

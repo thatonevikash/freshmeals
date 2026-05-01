@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
-import { UserModel as User } from "../models/user.model";
-import { generateToken } from "../utils/jwt";
+import { UserModel as User } from "../models/user.model.js";
+import { generateToken } from "../utils/jwt.js";
 
 // -------------------------------------------------------------
 

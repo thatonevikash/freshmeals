@@ -1,13 +1,13 @@
-import type { IMealSchema } from "../models/meal.model";
-import type { IPlateSchema } from "../models/plate.model";
-import type { SellerLevel } from "../models/seller.model";
-import type { IUserSchema } from "../models/user.model";
+import type { IMealSchema } from "../models/meal.model.js";
+import type { IPlateSchema } from "../models/plate.model.js";
+import type { SellerLevel } from "../models/seller.model.js";
+import type { IUserSchema } from "../models/user.model.js";
 
-import type { MealDto } from "./meal.dto";
+import type { MealDto } from "./meal.dto.js";
 import {
   toSellerInformationDto,
   type SellerInformationDto,
-} from "./seller.dto";
+} from "./seller.dto.js";
 
 // -------------------------------------------------------------
 
