@@ -92,6 +92,8 @@ export function PlateDetailView({ plateId }: { plateId: string }) {
   );
 }
 
+// -------------------------------------------------------------
+
 function DetailHero({
   imageUrl,
   title,
@@ -104,35 +106,65 @@ function DetailHero({
   onDelete,
 }: any) {
   return (
-    <Card sx={{ borderRadius: 4, overflow: "hidden", border: (t) => `1px solid ${t.palette.divider}` }}>
+    <Card
+      sx={{
+        borderRadius: 4,
+        overflow: "hidden",
+        border: (t) => `1px solid ${t.palette.divider}`,
+      }}
+    >
       <Box sx={{ position: "relative", height: { xs: 240, md: 360 } }}>
         <Image src={imageUrl} alt={title} fill style={{ objectFit: "cover" }} />
       </Box>
 
       <Stack spacing={2} sx={{ p: { xs: 2, md: 3 } }}>
-        <Stack direction={{ xs: "column", md: "row" }} justifyContent="space-between" spacing={2}>
+        <Stack
+          direction={{ xs: "column", md: "row" }}
+          sx={{ justifyContent: "space-between" }}
+          spacing={2}
+        >
           <Box>
-            <Typography variant="h4" sx={{ fontWeight: 800 }}>{title}</Typography>
-            {subtitle && <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>{subtitle}</Typography>}
+            <Typography variant="h4" sx={{ fontWeight: 800 }}>
+              {title}
+            </Typography>
+            {subtitle && (
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{ mt: 0.5 }}
+              >
+                {subtitle}
+              </Typography>
+            )}
           </Box>
-          <Stack direction="row" spacing={1.5} alignItems="center">
+          <Stack direction="row" spacing={1.5} sx={{ alignItems: "center" }}>
             <Chip label={chipLabel} color="primary" variant="outlined" />
-            <Typography variant="h4" sx={{ fontWeight: 800 }}>${price}</Typography>
+            <Typography variant="h4" sx={{ fontWeight: 800 }}>
+              ${price}
+            </Typography>
           </Stack>
         </Stack>
 
         <Divider />
 
-        <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
-          <Stack direction="row" alignItems="center" spacing={1.2}>
+        <Stack
+          spacing={2}
+          direction="row"
+          sx={{ alignItems: "center", justifyContent: "space-between" }}
+        >
+          <Stack direction="row" sx={{ alignItems: "center" }} spacing={1.2}>
             <Avatar src={sellerAvatar} alt={sellerName} />
-            <Typography variant="body2" color="text.secondary">Owned by {sellerName}</Typography>
+            <Typography variant="body2" color="text.secondary">
+              Owned by {sellerName}
+            </Typography>
           </Stack>
 
           {isOwner && (
             <Stack direction="row" spacing={1}>
               <Button variant="outlined">Edit</Button>
-              <Button color="error" variant="contained" onClick={onDelete}>Delete</Button>
+              <Button color="error" variant="contained" onClick={onDelete}>
+                Delete
+              </Button>
             </Stack>
           )}
         </Stack>
