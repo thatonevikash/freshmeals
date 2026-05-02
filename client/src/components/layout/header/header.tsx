@@ -11,10 +11,7 @@ import { navItems, type NavItem } from "./config-nav";
 
 function NavUl({ navData }: { navData: NavItem[] }) {
   return (
-    <Box
-      component={"ul"}
-      sx={{ display: "flex", alignItems: "center", gap: 3 }}
-    >
+    <Box component="ul" sx={{ display: "flex", alignItems: "center", gap: 3 }}>
       {navData.map((navItem) => (
         <Box component="li" key={navItem.path}>
           <NavLink href={navItem.path} value={navItem.value} />

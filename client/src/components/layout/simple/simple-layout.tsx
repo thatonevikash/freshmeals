@@ -8,7 +8,7 @@ export function SimpleLayout({ children }: { children: React.ReactNode }) {
     <div>
       <Header />
 
-      <Main className="min-w-full flex justify-center flex-col">
+      <Main sx={{ minWidth: "100%", justifyContent: "center" }}>
         {children}
       </Main>
     </div>
