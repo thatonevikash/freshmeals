@@ -24,6 +24,6 @@ export interface MealPlate {
   plate_name: string;
   plate_price: string;
   plate_img_url: string;
-  plate_items: string[];
+  plate_items: Omit<Meal, "meal_price" | "seller_information">[];
   seller_information: Seller;
 }
