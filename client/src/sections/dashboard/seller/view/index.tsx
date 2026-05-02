@@ -1,7 +1,8 @@
 "use client";
 
 import { useGetMealCollection } from "@/actions/meal";
-import { DashboardContent } from "@/components/core";
+
+import { DashboardContent } from "@/components/layout/main";
 import { SellerCollectionMeals } from "../seller-collection-meals";
 
 // -----------------------------------------------------------------------

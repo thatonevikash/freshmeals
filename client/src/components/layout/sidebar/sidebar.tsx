@@ -3,24 +3,27 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LucideIcon, ChevronRight, LogOut } from "lucide-react";
-import {
-  Avatar,
-  Box,
-  Button,
-  Divider,
-  Drawer,
-  List,
-  ListItem,
-  ListSubheader,
-  Typography,
-} from "@mui/material";
+
+import Box from "@mui/material/Box";
+import List from "@mui/material/List";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
+import Drawer from "@mui/material/Drawer";
+import ListItem from "@mui/material/ListItem";
+import ListSubheader from "@mui/material/ListSubheader";
+import Typography from "@mui/material/Typography";
+
 import { alpha, useTheme } from "@mui/material/styles";
 
-import { DashboardNavItem } from "./config-dashboard-nav";
 import { useAuthActions } from "@/actions/auth";
 import { useAuth } from "@/auth/hooks/use-auth";
 
-const DRAWER_WIDTH = 240;
+import { DashboardNavItem } from "./config-dashboard-nav";
+
+const DRAWER_WIDTH = 280;
+
+// -------------------------------------------------------------
 
 function SidebarNavLink({
   href,
@@ -31,8 +34,8 @@ function SidebarNavLink({
   value: string;
   icon: LucideIcon;
 }) {
-  const pathname = usePathname();
   const theme = useTheme();
+  const pathname = usePathname();
   const isActive = pathname === href;
 
   return (
@@ -67,6 +70,8 @@ function SidebarNavLink({
   );
 }
 
+// -------------------------------------------------------------
+
 function SidebarLogo() {
   return (
     <Link href="/" style={{ textDecoration: "none" }}>
@@ -89,6 +94,8 @@ function SidebarLogo() {
     </Link>
   );
 }
+
+// -------------------------------------------------------------
 
 function SidebarUserProfile() {
   const { user } = useAuth();
@@ -164,6 +171,8 @@ function SidebarUserProfile() {
   );
 }
 
+// -------------------------------------------------------------
+
 export function Sidebar({ navItems }: { navItems: DashboardNavItem[] }) {
   return (
     <Drawer
@@ -190,20 +199,6 @@ export function Sidebar({ navItems }: { navItems: DashboardNavItem[] }) {
       <List sx={{ px: 1.5, py: 2, flex: 1, overflowY: "auto" }}>
         {navItems.map((navItem) => (
           <Box key={navItem.section} sx={{ mb: 2.5 }}>
-            <ListSubheader
-              disableSticky
-              sx={{
-                px: 1.5,
-                mb: 0.75,
-                bgcolor: "transparent",
-                color: "grey.500",
-                fontSize: 10,
-                fontWeight: 700,
-                letterSpacing: 1.2,
-              }}
-            >
-              {navItem.section}
-            </ListSubheader>
             {navItem.items.map((item) => (
               <SidebarNavLink
                 key={item.path}
@@ -223,5 +218,3 @@ export function Sidebar({ navItems }: { navItems: DashboardNavItem[] }) {
     </Drawer>
   );
 }
-
-export { DRAWER_WIDTH };

@@ -8,5 +8,5 @@ import { DashboardContent } from "@/components/layout/main";
 export function DashboardAppView() {
   const { user } = useAuth();
 
-  return <DashboardContent>Hey: {user?.username}</DashboardContent>;
+  return <DashboardContent>Hey: {user?.name}</DashboardContent>;
 }
