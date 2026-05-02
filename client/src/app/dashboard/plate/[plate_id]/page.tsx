@@ -5,7 +5,7 @@ import { CONFIG } from "@/config-global";
 // -------------------------------------------------------------
 
 export const metadata: Metadata = {
-  title: `Meal details | ${CONFIG.site.name}`,
+  title: `Plate details | ${CONFIG.site.name}`,
 };
 
 export default async function Page({
