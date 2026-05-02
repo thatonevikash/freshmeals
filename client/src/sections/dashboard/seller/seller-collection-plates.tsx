@@ -1,25 +1,57 @@
-// import type { MealPlate } from "@/types/meal.type";
-// import {  PlateCard } from "@/components/core/cards";
+import Image from "next/image";
+import Box from "@mui/material/Box";
 
-// // -----------------------------------------------------------------------
+import type { MealPlate } from "@/types/meal.type";
 
-// export function SellerCollectionPlates({ plates = [] }: { plates: MealPlate[] }) {
-//   return (
-//     <div className="flex space-x-4 w-full ">
-//       {plates.map((plate) => (
-//         <PlateCard
-//           className="w-40"
-//           key={plate.plate_id}
-//           id={plate.plate_id}
-//           name={plate.plate_name}
-//           price={meal.meal_price}
-//           imageUrl={meal.meal_img_url}
-//           seller={{
-//             name: meal.seller_information.seller_name,
-//             avatarUrl: meal.seller_information.seller_avatar,
-//           }}
-//         />
-//       ))}
-//     </div>
-//   );
-// }
+import {
+  Avatar,
+  Card,
+  CardMedia,
+  Grid,
+  Paper,
+  Typography,
+} from "@mui/material";
+
+// -----------------------------------------------------------------------
+
+export function SellerCollectionPlates({
+  plates = [],
+}: {
+  plates: MealPlate[];
+}) {
+  return (
+    <Paper sx={{ p: 2, mt: 3, borderRadius: 3 }} variant="outlined">
+      <Grid container spacing={2}>
+        {plates.map((plate) => (
+          <Grid key={plate.id} size={{ xs: 6, md: 4, lg: 3 }}>
+            <Card sx={{ p: 1 }}>
+              <CardMedia>
+                <Image
+                  src={plate.plate_img_url}
+                  alt="meal image"
+                  width={200}
+                  height={200}
+                />
+              </CardMedia>
+
+              <Typography variant="h6">{plate.plate_name}</Typography>
+
+              <Typography variant="subtitle1">{plate.plate_price}</Typography>
+
+              <Box sx={{ display: "flex", gap: 1 }}>
+                <Avatar
+                  src={plate.seller_information.seller.avatar_url}
+                  alt="seller image"
+                  sx={{ height: 24, width: 24 }}
+                />
+                <Typography variant="body2" sx={{ color: "text.disabled" }}>
+                  {plate.seller_information.seller.name}
+                </Typography>
+              </Box>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+    </Paper>
+  );
+}

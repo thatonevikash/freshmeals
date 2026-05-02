@@ -1,16 +1,18 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect } from "react";
 import axios from "@/lib/axios";
 import { getCookie, deleteCookie } from "cookies-next";
 
 // -------------------------------------------------------------
 
-interface User {
+export interface User {
+  id: string;
   name: string;
   email: string;
-  mobile_no: string;
   address: string;
+  mobile_no: string;
+  avatar_url: string;
   is_registered_seller: boolean;
   pincode: string;
 }
@@ -45,10 +47,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const res = await axios.get("/user");
 
     setUser({
+      id: res.data.id,
       name: res.data.name,
       email: res.data.email,
-      mobile_no: res.data.mobile_no,
       address: res.data.address,
+      mobile_no: res.data.mobile_no,
+      avatar_url: res.data.avatar_url,
       is_registered_seller: res.data.is_registered_seller,
       pincode: res.data.pincode,
     });
@@ -80,7 +84,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, refreshUser, isLoading }}>
+    <AuthContext.Provider
+      value={{ user, login, logout, refreshUser, isLoading }}
+    >
       {children}
     </AuthContext.Provider>
   );

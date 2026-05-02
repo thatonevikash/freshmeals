@@ -1,7 +1,7 @@
 import useSWR from "swr";
 
 import axios, { endpoints, fetcher } from "@/lib/axios";
-import type { IMeal, IMealPlate } from "@/types/meal.type";
+import type { Meal, MealPlate } from "@/types/meal.type";
 
 // -------------------------------------------------------------
 
@@ -9,7 +9,9 @@ import type { IMeal, IMealPlate } from "@/types/meal.type";
  * meal
  ********************************************************* */
 
-export async function createMealApi(data: IMeal) {
+export async function createMealApi(
+  data: Omit<Meal, "id" | "seller_information">,
+) {
   const URL = endpoints.general.meal.root;
 
   const res = await axios.post(URL, data);
@@ -37,7 +39,9 @@ export function useGetMeal(meal_id: string) {
  * plate
  ********************************************************* */
 
-export async function createMealPlateApi(data: IMealPlate) {
+export async function createMealPlateApi(
+  data: Omit<MealPlate, "id" | "seller_information">,
+) {
   const URL = endpoints.general.meal.plate;
 
   const res = await axios.post(URL, data);
