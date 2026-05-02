@@ -12,10 +12,12 @@ import StorefrontIcon from "@mui/icons-material/Storefront";
 import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
 
 import { registerSellerApi } from "@/actions/seller";
+import { useAuth } from "@/auth/hooks/use-auth";
 
 // -------------------------------------------------------------
 
 export function SellerRegistration() {
+  const { refreshUser } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -27,9 +29,8 @@ export function SellerRegistration() {
 
     try {
       await registerSellerApi();
-      setSuccessMessage(
-        "You are now registered as a seller. Refresh to continue.",
-      );
+      await refreshUser();
+      setSuccessMessage("You are now registered as a seller.");
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Unable to register as seller";
