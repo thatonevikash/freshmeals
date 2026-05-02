@@ -1,15 +1,16 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
 import Avatar from "@mui/material/Avatar";
 import Card from "@mui/material/Card";
 import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
+import CardActionArea from "@mui/material/CardActionArea";
 
 import type { Meal } from "@/types/meal.type";
 
@@ -34,6 +35,7 @@ export function SellerCollectionMeals({ meals = [] }: { meals: Meal[] }) {
                 },
               }}
             >
+              <CardActionArea LinkComponent={Link} href={`/dashboard/meal/${meal.id}`} sx={{ borderRadius: 2.5, p: 0.5 }}>
               <CardMedia sx={{ borderRadius: 2, overflow: "hidden" }}>
                 <Image
                   src={meal.meal_img_url}
@@ -84,6 +86,7 @@ export function SellerCollectionMeals({ meals = [] }: { meals: Meal[] }) {
                   </Typography>
                 </Box>
               </Stack>
+              </CardActionArea>
             </Card>
           </Grid>
         ))}

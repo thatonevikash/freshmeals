@@ -2,17 +2,18 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
 import Avatar from "@mui/material/Avatar";
 import Card from "@mui/material/Card";
 import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
+import CardActionArea from "@mui/material/CardActionArea";
 
 import type { MealPlate } from "@/types/meal.type";
 
@@ -103,6 +104,7 @@ export function SellerCollectionPlates({
                 },
               }}
             >
+              <CardActionArea LinkComponent={Link} href={`/dashboard/plate/${plate.id}`} sx={{ borderRadius: 2.5, p: 0.5 }}>
               <PlateThumbnailCarousel plate={plate} />
 
               <Stack spacing={1.2} sx={{ pt: 1.5 }}>
@@ -145,6 +147,7 @@ export function SellerCollectionPlates({
                   </Typography>
                 </Box>
               </Stack>
+              </CardActionArea>
             </Card>
           </Grid>
         ))}

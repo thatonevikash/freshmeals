@@ -34,7 +34,7 @@ export function useGetMeals() {
 export function useGetMeal(meal_id: string) {
   const URL = `${endpoints.general.meal.root}/${meal_id}`;
 
-  return useSWR(URL);
+  return useSWR(URL, fetcher);
 }
 
 export async function updateMealApi(
@@ -59,7 +59,7 @@ export async function deleteMealApi(id: string) {
 
   const res = await axios.delete(URL);
 
-  if (res.status !== 201) {
+  if (res.status !== 200) {
     throw new Error("Unable to delete meal!");
   }
 
@@ -97,7 +97,21 @@ export function useGetMealPlates() {
 export function useGetMealPlate(plate_id: string) {
   const URL = `${endpoints.general.meal.plate}/${plate_id}`;
 
-  return useSWR(URL);
+  return useSWR(URL, fetcher);
+}
+
+export async function deleteMealPlateApi(id: string) {
+  const URL = `${endpoints.general.meal.plate}/${id}`;
+
+  const res = await axios.delete(URL);
+
+  if (res.status !== 200) {
+    throw new Error("Unable to delete meal plate!");
+  }
+
+  mutate(endpoints.general.meal.collection);
+
+  return res.data;
 }
 
 export function useGetMostOrderedMeals() {
