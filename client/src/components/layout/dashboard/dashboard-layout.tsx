@@ -1,17 +1,25 @@
-import { Main } from "../main";
-import { Sidebar } from "../sidebar";
-import { dashboardNavItems } from "../sidebar/config-dashboard-nav";
+import Box from "@mui/material/Box";
 
-// -----------------------------------------------------------------------
+import { Main } from "../main";
+import { Sidebar, DRAWER_WIDTH } from "../sidebar";
+import { dashboardNavItems } from "../sidebar/config-dashboard-nav";
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex min-h-screen bg-[#FAFAF7]">
+    <Box sx={{ display: "flex", minHeight: "100vh", bgcolor: "grey.50" }}>
       <Sidebar navItems={dashboardNavItems} />
 
-      <div className="flex flex-col flex-1 ml-60 min-h-screen">
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          flex: 1,
+          ml: `${DRAWER_WIDTH}px`,
+          minHeight: "100vh",
+        }}
+      >
         <Main className="flex-1 flex flex-col">{children}</Main>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }

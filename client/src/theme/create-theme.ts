@@ -1,17 +1,12 @@
 import { extendTheme } from "@mui/material/styles";
 
-import { typography } from "./core";
-
-// -------------------------------------------------------------
+import { typography, colorSchemes } from "./core";
 
 export function createTheme() {
-  const initialTheme = {
+  return extendTheme({
     colorSchemeSelector: "data",
+    colorSchemes,
     typography,
-    shape: { borderRadius: 8 },
-  };
-
-  const theme = extendTheme(initialTheme);
-
-  return theme;
+    shape: { borderRadius: 10 },
+  });
 }

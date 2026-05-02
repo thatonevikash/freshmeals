@@ -1,14 +1,26 @@
 "use client";
 
 import Link from "next/link";
-import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
+import { LucideIcon, ChevronRight, LogOut } from "lucide-react";
+import {
+  Avatar,
+  Box,
+  Button,
+  Divider,
+  Drawer,
+  List,
+  ListItem,
+  ListSubheader,
+  Typography,
+} from "@mui/material";
+import { alpha, useTheme } from "@mui/material/styles";
+
 import { DashboardNavItem } from "./config-dashboard-nav";
-import { LucideIcon } from "lucide-react";
 import { useAuthActions } from "@/actions/auth";
 import { useAuth } from "@/auth/hooks/use-auth";
 
-// -----------------------------------------------------------------------
+const DRAWER_WIDTH = 240;
 
 function SidebarNavLink({
   href,
@@ -20,46 +32,63 @@ function SidebarNavLink({
   icon: LucideIcon;
 }) {
   const pathname = usePathname();
+  const theme = useTheme();
   const isActive = pathname === href;
 
   return (
-    <Link
-      href={href}
-      className={cn(
-        "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150",
-        isActive
-          ? "bg-green-800 text-white"
-          : "text-gray-500 hover:bg-green-50 hover:text-green-800",
-      )}
-    >
-      <Icon
-        className={cn(
-          "w-5 h-5 transition-colors",
-          isActive
-            ? "text-amber-400 fill-amber-400"
-            : "text-gray-400 fill-none",
-        )}
-      />
-
-      {value}
-    </Link>
+    <ListItem sx={{ p: 0, mb: 0.5 }}>
+      <Button
+        LinkComponent={Link}
+        href={href}
+        startIcon={<Icon size={18} strokeWidth={2} />}
+        fullWidth
+        sx={{
+          justifyContent: "flex-start",
+          py: 1.1,
+          px: 1.5,
+          borderRadius: 1.5,
+          fontWeight: 600,
+          textTransform: "none",
+          color: isActive ? "common.white" : "grey.600",
+          bgcolor: isActive ? "success.main" : "transparent",
+          "& .MuiButton-startIcon": {
+            color: isActive ? "warning.light" : "grey.500",
+          },
+          "&:hover": {
+            bgcolor: isActive
+              ? "success.dark"
+              : alpha(theme.palette.success.main, 0.08),
+          },
+        }}
+      >
+        {value}
+      </Button>
+    </ListItem>
   );
 }
-
-// -----------------------------------------------------------------------
 
 function SidebarLogo() {
   return (
-    <Link href="/" className="flex items-center gap-2 px-3 py-1 select-none">
-      <span className="w-2 h-2 rounded-full bg-amber-400 shrink-0" />
-      <span className="text-green-800 font-semibold text-base tracking-tight">
-        freshmeals
-      </span>
+    <Link href="/" style={{ textDecoration: "none" }}>
+      <Box sx={{ display: "flex", alignItems: "center", gap: 1, px: 1 }}>
+        <Box
+          sx={{
+            width: 8,
+            height: 8,
+            borderRadius: "50%",
+            bgcolor: "warning.light",
+          }}
+        />
+        <Typography
+          variant="subtitle1"
+          sx={{ color: "success.dark", fontWeight: 700, letterSpacing: -0.2 }}
+        >
+          freshmeals
+        </Typography>
+      </Box>
     </Link>
   );
 }
-
-// -----------------------------------------------------------------------
 
 function SidebarUserProfile() {
   const { user } = useAuth();
@@ -76,103 +105,123 @@ function SidebarUserProfile() {
   };
 
   return (
-    <div className="flex flex-col gap-2">
-      <Link
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
+      <Button
+        LinkComponent={Link}
         href="/profile"
-        className="group flex items-center gap-3 px-3 py-3 rounded-xl border border-gray-200/60 bg-white hover:border-green-200 hover:bg-green-50/60 transition-all duration-150"
+        fullWidth
+        sx={{
+          justifyContent: "space-between",
+          borderRadius: 2,
+          p: 1.2,
+          border: (theme) => `1px solid ${alpha(theme.palette.grey[500], 0.2)}`,
+          bgcolor: "common.white",
+          textTransform: "none",
+        }}
       >
-        {/* Avatar */}
-        <div className="w-9 h-9 rounded-lg bg-green-800 flex items-center justify-center text-white text-xs font-semibold shrink-0">
-          {initials}
-        </div>
-
-        {/* User info */}
-        <div className="flex flex-col min-w-0 flex-1">
-          <span className="text-sm font-medium text-gray-800 truncate leading-tight">
-            {user?.name}
-          </span>
-          <span className="text-xs text-gray-400 truncate leading-tight">
-            {user?.email}
-          </span>
-        </div>
-
-        {/* Arrow indicator */}
-        <svg
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          className="text-gray-300 group-hover:text-green-600 shrink-0 transition-colors"
+        <Box
+          sx={{ display: "flex", alignItems: "center", gap: 1.2, minWidth: 0 }}
         >
-          <path d="M9 18l6-6-6-6" />
-        </svg>
-      </Link>
+          <Avatar
+            sx={{
+              width: 36,
+              height: 36,
+              bgcolor: "success.main",
+              fontSize: 12,
+            }}
+          >
+            {initials}
+          </Avatar>
+          <Box sx={{ minWidth: 0, textAlign: "left" }}>
+            <Typography
+              variant="body2"
+              sx={{ color: "grey.800", fontWeight: 600 }}
+              noWrap
+            >
+              {user?.name}
+            </Typography>
+            <Typography variant="caption" sx={{ color: "grey.500" }} noWrap>
+              {user?.email}
+            </Typography>
+          </Box>
+        </Box>
+        <ChevronRight size={14} color="currentColor" />
+      </Button>
 
-      {/* Logout */}
-      <button
+      <Button
         onClick={handleLogout}
-        className="flex items-center gap-2 px-3 py-2 w-full rounded-lg text-sm font-medium text-gray-400 hover:bg-red-50 hover:text-red-600 transition-all duration-150 group"
+        startIcon={<LogOut size={14} />}
+        sx={{
+          justifyContent: "flex-start",
+          color: "grey.500",
+          textTransform: "none",
+          borderRadius: 1.5,
+        }}
       >
-        <svg
-          width="15"
-          height="15"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          className="shrink-0 transition-colors text-gray-300 group-hover:text-red-500"
-        >
-          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-          <polyline points="16 17 21 12 16 7" />
-          <line x1="21" y1="12" x2="9" y2="12" />
-        </svg>
         Sign out
-      </button>
-    </div>
+      </Button>
+    </Box>
   );
 }
-
-// -----------------------------------------------------------------------
 
 export function Sidebar({ navItems }: { navItems: DashboardNavItem[] }) {
   return (
-    <aside className="fixed top-0 left-0 h-screen w-60 flex flex-col bg-[#FAFAF7] border-r border-gray-200/60 z-40">
-      {/* Logo */}
-      <div className="h-16 flex items-center px-4 border-b border-gray-200/60 shrink-0">
+    <Drawer
+      variant="permanent"
+      open
+      sx={{
+        width: DRAWER_WIDTH,
+        flexShrink: 0,
+        "& .MuiDrawer-paper": {
+          width: DRAWER_WIDTH,
+          boxSizing: "border-box",
+          bgcolor: "grey.50",
+          borderRight: (theme) =>
+            `1px solid ${alpha(theme.palette.grey[500], 0.12)}`,
+        },
+      }}
+    >
+      <Box sx={{ px: 2, height: 64, display: "flex", alignItems: "center" }}>
         <SidebarLogo />
-      </div>
+      </Box>
 
-      {/* Nav */}
-      <nav
-        aria-label="Dashboard navigation"
-        className="flex-1 overflow-y-auto px-3 py-4"
-      >
+      <Divider />
+
+      <List sx={{ px: 1.5, py: 2, flex: 1, overflowY: "auto" }}>
         {navItems.map((navItem) => (
-          <div key={navItem.section}>
-            <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest px-3 mb-2">
+          <Box key={navItem.section} sx={{ mb: 2.5 }}>
+            <ListSubheader
+              disableSticky
+              sx={{
+                px: 1.5,
+                mb: 0.75,
+                bgcolor: "transparent",
+                color: "grey.500",
+                fontSize: 10,
+                fontWeight: 700,
+                letterSpacing: 1.2,
+              }}
+            >
               {navItem.section}
-            </p>
-            <ul className="flex flex-col gap-0.5">
-              {navItem.items.map((item) => (
-                <li key={item.path}>
-                  <SidebarNavLink
-                    href={item.path}
-                    value={item.value}
-                    icon={item.icon}
-                  />
-                </li>
-              ))}
-            </ul>
-          </div>
+            </ListSubheader>
+            {navItem.items.map((item) => (
+              <SidebarNavLink
+                key={item.path}
+                href={item.path}
+                value={item.value}
+                icon={item.icon}
+              />
+            ))}
+          </Box>
         ))}
-      </nav>
+      </List>
 
-      {/* User profile */}
-      <div className="px-3 py-4 border-t border-gray-200/60 shrink-0">
+      <Box sx={{ p: 2 }}>
+        <Divider sx={{ mb: 2 }} />
         <SidebarUserProfile />
-      </div>
-    </aside>
+      </Box>
+    </Drawer>
   );
 }
+
+export { DRAWER_WIDTH };
