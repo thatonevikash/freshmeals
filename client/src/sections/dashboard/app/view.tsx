@@ -1,7 +1,8 @@
 "use client";
 
-import { useAuth } from "@/auth/hooks/use-auth";
 import { DashboardContent } from "@/components/layout/main";
+
+import { useAuth } from "@/auth/hooks/use-auth";
 
 // -----------------------------------------------------------------------
 

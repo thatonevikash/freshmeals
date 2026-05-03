@@ -8,7 +8,7 @@
     "build": "next build",
     "dev": "next dev -p 4000 --turbopack",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
-    "lint": "eslint",
+    "lint": "eslint . --fix",
     "start": "next start",
     "typecheck": "tsc --noEmit"
   },
@@ -44,6 +44,8 @@
     "postcss": "^8",
     "prettier": "^3.8.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "eslint-plugin-perfectionist": "^4.15.1",
+    "eslint-plugin-unused-imports": "^4.3.0"
   }
 }

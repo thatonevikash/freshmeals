@@ -1,15 +1,16 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Image from "next/image";
+
 import Link from "next/link";
+import Image from "next/image";
 
 import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
 import Chip from "@mui/material/Chip";
 import Grid from "@mui/material/Grid";
-import Avatar from "@mui/material/Avatar";
-import Card from "@mui/material/Card";
 import Stack from "@mui/material/Stack";
+import Avatar from "@mui/material/Avatar";
 import Divider from "@mui/material/Divider";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
@@ -104,49 +105,57 @@ export function SellerCollectionPlates({
                 },
               }}
             >
-              <CardActionArea LinkComponent={Link} href={`/dashboard/plate/${plate.id}`} sx={{ borderRadius: 2.5, p: 0.5 }}>
-              <PlateThumbnailCarousel plate={plate} />
+              <CardActionArea
+                LinkComponent={Link}
+                href={`/dashboard/plate/${plate.id}`}
+                sx={{ borderRadius: 2.5, p: 0.5 }}
+              >
+                <PlateThumbnailCarousel plate={plate} />
 
-              <Stack spacing={1.2} sx={{ pt: 1.5 }}>
-                <Typography variant="subtitle1" sx={{ fontWeight: 700 }} noWrap>
-                  {plate.plate_name}
-                </Typography>
-
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Typography variant="h6" sx={{ fontWeight: 700 }}>
-                    ${plate.plate_price}
-                  </Typography>
-                  <Chip
-                    label={`${plate.plate_items.length} meals`}
-                    size="small"
-                    color="secondary"
-                    variant="outlined"
-                  />
-                </Box>
-
-                <Divider />
-
-                <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-                  <Avatar
-                    src={plate.seller_information.seller.avatar_url}
-                    alt={plate.seller_information.seller.name}
-                    sx={{ height: 28, width: 28 }}
-                  />
+                <Stack spacing={1.2} sx={{ pt: 1.5 }}>
                   <Typography
-                    variant="body2"
-                    sx={{ color: "text.secondary" }}
+                    variant="subtitle1"
+                    sx={{ fontWeight: 700 }}
                     noWrap
                   >
-                    {plate.seller_information.seller.name}
+                    {plate.plate_name}
                   </Typography>
-                </Box>
-              </Stack>
+
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                      ${plate.plate_price}
+                    </Typography>
+                    <Chip
+                      label={`${plate.plate_items.length} meals`}
+                      size="small"
+                      color="secondary"
+                      variant="outlined"
+                    />
+                  </Box>
+
+                  <Divider />
+
+                  <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+                    <Avatar
+                      src={plate.seller_information.seller.avatar_url}
+                      alt={plate.seller_information.seller.name}
+                      sx={{ height: 28, width: 28 }}
+                    />
+                    <Typography
+                      variant="body2"
+                      sx={{ color: "text.secondary" }}
+                      noWrap
+                    >
+                      {plate.seller_information.seller.name}
+                    </Typography>
+                  </Box>
+                </Stack>
               </CardActionArea>
             </Card>
           </Grid>

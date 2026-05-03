@@ -1,5 +1,6 @@
-import { GuestGuard } from "@/auth/guard/guest-guard";
 import { CenteredLayout } from "@/components/layout/centered";
+
+import { GuestGuard } from "@/auth/guard/guest-guard";
 
 // -----------------------------------------------------------------------
 

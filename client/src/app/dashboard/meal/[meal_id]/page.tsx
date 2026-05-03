@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { MealDetailView } from "@/sections/dashboard/details/view";
+
 import { CONFIG } from "@/config-global";
+import { MealDetailView } from "@/sections/dashboard/details/view";
 
 // -------------------------------------------------------------
 

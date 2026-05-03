@@ -1,21 +1,22 @@
 "use client";
 
+import { LucideIcon, ChevronRight, LogOut } from "lucide-react";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LucideIcon, ChevronRight, LogOut } from "lucide-react";
 
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
+import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import Typography from "@mui/material/Typography";
-
 import { alpha, useTheme } from "@mui/material/styles";
 
 import { useAuthActions } from "@/actions/auth";
+
 import { useAuth } from "@/auth/hooks/use-auth";
 
 import { DashboardNavItem } from "./config-dashboard-nav";

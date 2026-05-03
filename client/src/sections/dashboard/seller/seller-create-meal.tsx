@@ -1,23 +1,23 @@
 import { MouseEvent, useState } from "react";
 
-import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
-import CardActionArea from "@mui/material/CardActionArea";
-import CardContent from "@mui/material/CardContent";
 import Chip from "@mui/material/Chip";
+import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Typography from "@mui/material/Typography";
-
+import CardContent from "@mui/material/CardContent";
+import ToggleButton from "@mui/material/ToggleButton";
+import CardActionArea from "@mui/material/CardActionArea";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
 
-import { createMealApi, createMealPlateApi, useGetMeals } from "@/actions/meal";
 import type { Meal } from "@/types/meal.type";
+
+import { createMealApi, createMealPlateApi, useGetMeals } from "@/actions/meal";
 
 // -------------------------------------------------------------
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -14,15 +15,19 @@ import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 
-import { useAuth } from "@/auth/hooks/use-auth";
-import { LoadingScreen } from "@/components/loading";
-import { DashboardContent } from "@/components/layout/main";
+import { Meal } from "@/types/meal.type";
+
 import {
   deleteMealApi,
   deleteMealPlateApi,
   useGetMeal,
   useGetMealPlate,
 } from "@/actions/meal";
+
+import { LoadingScreen } from "@/components/loading";
+import { DashboardContent } from "@/components/layout/main";
+
+import { useAuth } from "@/auth/hooks/use-auth";
 
 // -------------------------------------------------------------
 
@@ -73,7 +78,7 @@ export function PlateDetailView({ plateId }: { plateId: string }) {
   };
 
   const subtitle = useMemo(
-    () => plate?.plate_items?.map((item: any) => item.meal_name).join(" • "),
+    () => plate?.plate_items?.map((item: Meal) => item.meal_name).join(" • "),
     [plate?.plate_items],
   );
 
@@ -100,6 +105,18 @@ export function PlateDetailView({ plateId }: { plateId: string }) {
 
 // -------------------------------------------------------------
 
+interface DetailHeroProps {
+  imageUrl: string;
+  title: string;
+  price: string;
+  chipLabel: string;
+  sellerName: string;
+  sellerAvatar: string;
+  subtitle?: string;
+  isOwner: boolean;
+  onDelete: () => void;
+}
+
 function DetailHero({
   imageUrl,
   title,
@@ -110,8 +127,7 @@ function DetailHero({
   subtitle,
   isOwner,
   onDelete,
-  onEdit,
-}: any) {
+}: DetailHeroProps) {
   return (
     <Card
       sx={{

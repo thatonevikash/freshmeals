@@ -1,8 +1,10 @@
 "use client";
 
 import { createContext, useState, useEffect } from "react";
-import axios from "@/lib/axios";
+
 import { getCookie, deleteCookie } from "cookies-next";
+
+import axios from "@/lib/axios";
 
 // -------------------------------------------------------------
 
@@ -29,7 +31,7 @@ interface AuthContextType {
 
 export const AuthContext = createContext<AuthContextType>({
   user: null,
-  login: (data: any) => {},
+  login: (data: User) => {},
   logout: () => {},
   refreshUser: async () => {},
   isLoading: true,
@@ -76,7 +78,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     initAuth();
   }, []);
 
-  const login = (userData: any) => setUser(userData);
+  const login = (userData: User) => setUser(userData);
 
   const logout = () => {
     deleteCookie("auth_token");

@@ -3,8 +3,9 @@
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 
-import { NavLink } from "./nav-link";
 import { Logo } from "@/components/logo";
+
+import { NavLink } from "./nav-link";
 import { navItems, type NavItem } from "./config-nav";
 
 // -----------------------------------------------------------------------

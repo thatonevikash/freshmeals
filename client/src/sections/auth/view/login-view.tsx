@@ -12,9 +12,9 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 
-import { RouterLink } from "@/routes";
-
 import { useAuthActions } from "@/actions/auth";
+
+import { RouterLink } from "@/routes";
 
 // -----------------------------------------------------------------------
 
@@ -303,7 +303,7 @@ export function LogInView() {
 
           {/* Footer */}
           <Typography sx={{ textAlign: "center", mt: 4, color: "grey.400" }}>
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link
               component={RouterLink}
               href="/sign-up"
