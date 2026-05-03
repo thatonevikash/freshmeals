@@ -73,7 +73,7 @@ export async function deleteMealApi(id: string) {
  ********************************************************* */
 
 export async function createMealPlateApi(
-  data: Omit<MealPlate, "id" | "seller_information">,
+  data: Pick<MealPlate, "plate_name" | "plate_price" | "plate_img_url"> & { plate_items: string[] },
 ) {
   const URL = endpoints.general.meal.plate;
 
