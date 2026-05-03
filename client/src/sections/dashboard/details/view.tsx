@@ -10,8 +10,8 @@ import Chip from "@mui/material/Chip";
 import Card from "@mui/material/Card";
 import Stack from "@mui/material/Stack";
 import Alert from "@mui/material/Alert";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
+import Avatar from "@mui/material/Avatar";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 
@@ -115,6 +115,7 @@ interface DetailHeroProps {
   subtitle?: string;
   isOwner: boolean;
   onDelete: () => void;
+  onEdit: () => void;
 }
 
 function DetailHero({
@@ -127,6 +128,7 @@ function DetailHero({
   subtitle,
   isOwner,
   onDelete,
+  onEdit,
 }: DetailHeroProps) {
   return (
     <Card
@@ -184,7 +186,9 @@ function DetailHero({
 
           {isOwner && (
             <Stack direction="row" spacing={1}>
-              <Button variant="outlined" onClick={onEdit}>Edit</Button>
+              <Button variant="outlined" onClick={onEdit}>
+                Edit
+              </Button>
               <Button color="error" variant="contained" onClick={onDelete}>
                 Delete
               </Button>
