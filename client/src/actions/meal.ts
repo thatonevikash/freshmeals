@@ -3,8 +3,6 @@ import useSWR, { mutate } from "swr";
 import axios, { endpoints, fetcher } from "@/lib/axios";
 import type { Meal, MealPlate } from "@/types/meal.type";
 
-// -------------------------------------------------------------
-
 /* *********************************************************
  * meal
  ********************************************************* */
@@ -45,11 +43,12 @@ export async function updateMealApi(
 
   const res = await axios.put(URL, data);
 
-  if (res.status !== 201) {
+  if (res.status !== 200) {
     throw new Error("Unable to update meal!");
   }
 
   mutate(endpoints.general.meal.collection);
+  mutate(URL);
 
   return res.data;
 }
@@ -98,6 +97,54 @@ export function useGetMealPlate(plate_id: string) {
   const URL = `${endpoints.general.meal.plate}/${plate_id}`;
 
   return useSWR(URL, fetcher);
+}
+
+export async function updateMealPlateApi(
+  id: string,
+  data: Pick<MealPlate, "plate_name" | "plate_price" | "plate_img_url">,
+) {
+  const URL = `${endpoints.general.meal.plate}/${id}`;
+
+  const res = await axios.put(URL, data);
+
+  if (res.status !== 200) {
+    throw new Error("Unable to update meal plate!");
+  }
+
+  mutate(endpoints.general.meal.collection);
+  mutate(URL);
+
+  return res.data;
+}
+
+export async function addMealToPlateApi(plateId: string, mealId: string) {
+  const URL = `${endpoints.general.meal.plate}/${plateId}/add/${mealId}`;
+
+  const res = await axios.patch(URL);
+
+  if (res.status !== 200) {
+    throw new Error("Unable to add meal to plate!");
+  }
+
+  mutate(`${endpoints.general.meal.plate}/${plateId}`);
+  mutate(endpoints.general.meal.collection);
+
+  return res.data;
+}
+
+export async function removeMealFromPlateApi(plateId: string, mealId: string) {
+  const URL = `${endpoints.general.meal.plate}/${plateId}/remove/${mealId}`;
+
+  const res = await axios.patch(URL);
+
+  if (res.status !== 200) {
+    throw new Error("Unable to remove meal from plate!");
+  }
+
+  mutate(`${endpoints.general.meal.plate}/${plateId}`);
+  mutate(endpoints.general.meal.collection);
+
+  return res.data;
 }
 
 export async function deleteMealPlateApi(id: string) {
