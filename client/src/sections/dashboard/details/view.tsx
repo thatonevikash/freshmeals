@@ -57,6 +57,7 @@ export function MealDetailView({ mealId }: { mealId: string }) {
         sellerAvatar={meal.seller_information.seller.avatar_url}
         isOwner={!!isOwner}
         onDelete={handleDelete}
+        onEdit={() => router.push(`/dashboard/meal/${mealId}/edit`)}
       />
     </DashboardContent>
   );
@@ -96,6 +97,7 @@ export function PlateDetailView({ plateId }: { plateId: string }) {
         sellerAvatar={plate.seller_information.seller.avatar_url}
         isOwner={!!isOwner}
         onDelete={handleDelete}
+        onEdit={() => router.push(`/dashboard/plate/${plateId}/edit`)}
       />
     </DashboardContent>
   );
@@ -182,7 +184,7 @@ function DetailHero({
 
           {isOwner && (
             <Stack direction="row" spacing={1}>
-              <Button variant="outlined">Edit</Button>
+              <Button variant="outlined" onClick={onEdit}>Edit</Button>
               <Button color="error" variant="contained" onClick={onDelete}>
                 Delete
               </Button>
