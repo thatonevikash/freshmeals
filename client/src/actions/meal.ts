@@ -1,7 +1,8 @@
 import useSWR, { mutate } from "swr";
 
-import axios, { endpoints, fetcher } from "@/lib/axios";
 import type { Meal, MealPlate } from "@/types/meal.type";
+
+import axios, { endpoints, fetcher } from "@/lib/axios";
 
 // -------------------------------------------------------------
 

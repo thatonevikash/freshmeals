@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 
-import { GuestGuard } from "@/auth/guard/guest-guard";
 import { SimpleLayout } from "@/components/layout/simple";
+
+import { GuestGuard } from "@/auth/guard/guest-guard";
 
 // -----------------------------------------------------------------------
 

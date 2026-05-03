@@ -8,7 +8,7 @@
     "build": "next build",
     "dev": "next dev -p 4000 --turbopack",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
-    "lint": "eslint",
+    "lint": "eslint . --fix",
     "start": "next start",
     "typecheck": "tsc --noEmit"
   },

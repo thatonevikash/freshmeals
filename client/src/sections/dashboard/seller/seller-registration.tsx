@@ -1,17 +1,17 @@
 import { useState } from "react";
 
-import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import Chip from "@mui/material/Chip";
+import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
 
 import { registerSellerApi } from "@/actions/seller";
+
 import { useAuth } from "@/auth/hooks/use-auth";
 
 // -------------------------------------------------------------

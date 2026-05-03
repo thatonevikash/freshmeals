@@ -2,9 +2,9 @@ import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import Button from "@mui/material/Button";
 import { alpha } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
 
 import { useAuth } from "@/auth/hooks/use-auth";
-import Typography from "@mui/material/Typography";
 
 import { RouterLink } from "@/routes";
 

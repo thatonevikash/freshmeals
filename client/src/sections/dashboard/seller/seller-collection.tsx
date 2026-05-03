@@ -1,8 +1,11 @@
 import { useState } from "react";
+
 import { Divider, Paper, Tab, Tabs } from "@mui/material";
+
+import { Meal, MealPlate } from "@/types/meal.type";
+
 import { SellerCollectionMeals } from "./seller-collection-meals";
 import { SellerCollectionPlates } from "./seller-collection-plates";
-import { Meal, MealPlate } from "@/types/meal.type";
 
 // -------------------------------------------------------------
 

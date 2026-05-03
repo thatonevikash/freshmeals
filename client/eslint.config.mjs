@@ -1,47 +1,78 @@
-import nextVitals from 'eslint-config-next/core-web-vitals';
-import nextTypescript from 'eslint-config-next/typescript';
-import perfectionist from 'eslint-plugin-perfectionist';
-import unusedImports from 'eslint-plugin-unused-imports';
+import perfectionist from "eslint-plugin-perfectionist";
+import unusedImports from "eslint-plugin-unused-imports";
+import nextTypescript from "eslint-config-next/typescript";
+import nextVitals from "eslint-config-next/core-web-vitals";
 
-export default [
+const config = [
   ...nextVitals,
   ...nextTypescript,
   {
     plugins: {
       perfectionist,
-      'unused-imports': unusedImports,
+      "unused-imports": unusedImports,
     },
     rules: {
-      'unused-imports/no-unused-imports': 'error',
-      'no-unused-vars': 'off',
-      '@typescript-eslint/no-unused-vars': 'off',
-      'unused-imports/no-unused-vars': [
-        'warn',
+      "unused-imports/no-unused-imports": "error",
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": "off",
+      "unused-imports/no-unused-vars": [
+        "off",
         {
-          args: 'after-used',
-          argsIgnorePattern: '^_',
-          vars: 'all',
-          varsIgnorePattern: '^_',
+          args: "after-used",
+          argsIgnorePattern: "^_",
+          vars: "all",
+          varsIgnorePattern: "^_",
         },
       ],
-      'perfectionist/sort-imports': [
-        'error',
+      "perfectionist/sort-imports": [
+        "error",
         {
-          type: 'natural',
-          order: 'asc',
+          order: "asc",
+          ignoreCase: true,
+          type: "line-length",
+          specialCharacters: "keep",
+          internalPattern: ["^@/.*"],
           groups: [
-            'type',
-            ['builtin', 'external'],
-            'internal-type',
-            'internal',
-            ['parent-type', 'sibling-type', 'index-type'],
-            ['parent', 'sibling', 'index'],
-            'object',
-            'unknown',
+            "react",
+            "next",
+            "mui",
+            "external",
+            "type",
+            "internal-types",
+            "internal-lib",
+            "internal-hooks",
+            "internal-actions",
+            "internal-components",
+            "internal-auth",
+            "internal-routes",
+            "internal-theme",
+            "internal",
+            ["parent", "sibling", "index"],
+            "icons",
+            "object",
+            "unknown",
           ],
-          newlinesBetween: 'always',
+          customGroups: {
+            value: {
+              react: ["react"],
+              next: ["^next", "^next/.*", "cookies-next"],
+              mui: ["^@mui/.*", "^@emotion/.*"],
+              icons: ["^lucide-react$"],
+              "internal-types": ["^@/types/.*"],
+              "internal-lib": ["^@/lib/.*"],
+              "internal-actions": ["^@/actions/.*"],
+              "internal-hooks": ["^@/hooks/.*"],
+              "internal-components": ["^@/components/.*"],
+              "internal-auth": ["^@/auth/.*"],
+              "internal-routes": ["^@/routes/.*"],
+              "internal-theme": ["^@/theme/.*"],
+            },
+          },
+          newlinesBetween: "always",
         },
       ],
     },
   },
 ];
+
+export default config;

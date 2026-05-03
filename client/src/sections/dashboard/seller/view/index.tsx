@@ -1,15 +1,15 @@
 "use client";
 
+import { useGetMealCollection } from "@/actions/meal";
+
+import { LoadingScreen } from "@/components/loading";
 import { DashboardContent } from "@/components/layout/main";
+
 import { useAuth } from "@/auth/hooks/use-auth";
 
-import { SellerRegistration } from "../seller-registration";
-import { SellerCreateMeal } from "../seller-create-meal";
-import { useGetMealCollection } from "@/actions/meal";
-import { LoadingScreen } from "@/components/loading";
-import { SellerCollectionMeals } from "../seller-collection-meals";
-import { SellerCollectionPlates } from "../seller-collection-plates";
 import { SellerCollection } from "../seller-collection";
+import { SellerCreateMeal } from "../seller-create-meal";
+import { SellerRegistration } from "../seller-registration";
 
 // -----------------------------------------------------------------------
 

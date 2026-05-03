@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { PlateDetailView } from "@/sections/dashboard/details/view";
+
 import { CONFIG } from "@/config-global";
+import { PlateDetailView } from "@/sections/dashboard/details/view";
 
 // -------------------------------------------------------------
 

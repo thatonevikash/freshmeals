@@ -1,7 +1,8 @@
-import axios, { AxiosRequestConfig } from "axios";
-import { CONFIG } from "@/config-global";
-
 import { getCookie } from "cookies-next";
+
+import axios, { AxiosRequestConfig } from "axios";
+
+import { CONFIG } from "@/config-global";
 
 // -------------------------------------------------------------
 

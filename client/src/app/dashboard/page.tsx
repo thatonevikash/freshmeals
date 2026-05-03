@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+
 import { CONFIG } from "@/config-global";
 import { DashboardAppView } from "@/sections/dashboard/app/view";
 
