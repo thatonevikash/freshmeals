@@ -1,107 +1,13 @@
-"use client";
-
-import { useMemo } from "react";
-
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import Card from "@mui/material/Card";
 import Stack from "@mui/material/Stack";
-import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
-
-import { Meal } from "@/types/meal.type";
-
-import {
-  deleteMealApi,
-  deleteMealPlateApi,
-  useGetMeal,
-  useGetMealPlate,
-} from "@/actions/meal";
-
-import { LoadingScreen } from "@/components/loading";
-import { DashboardContent } from "@/components/layout/main";
-
-import { useAuth } from "@/auth/hooks/use-auth";
-
-// -------------------------------------------------------------
-
-export function MealDetailView({ mealId }: { mealId: string }) {
-  const router = useRouter();
-  const { user } = useAuth();
-  const { data: meal, isLoading, error } = useGetMeal(mealId);
-
-  const isOwner = user?.id === meal?.seller_information?.seller?.id;
-
-  const handleDelete = async () => {
-    await deleteMealApi(mealId);
-    router.push("/dashboard/seller");
-  };
-
-  if (isLoading) return <LoadingScreen />;
-  if (error || !meal) return <Alert severity="error">Meal not found.</Alert>;
-
-  return (
-    <DashboardContent>
-      <DetailHero
-        imageUrl={meal.meal_img_url}
-        title={meal.meal_name}
-        price={meal.meal_price}
-        chipLabel="Meal"
-        sellerName={meal.seller_information.seller.name}
-        sellerAvatar={meal.seller_information.seller.avatar_url}
-        isOwner={!!isOwner}
-        onDelete={handleDelete}
-        onEdit={() => router.push(`/dashboard/meal/${mealId}/edit`)}
-      />
-    </DashboardContent>
-  );
-}
-
-// -------------------------------------------------------------
-
-export function PlateDetailView({ plateId }: { plateId: string }) {
-  const router = useRouter();
-  const { user } = useAuth();
-  const { data: plate, isLoading, error } = useGetMealPlate(plateId);
-
-  const isOwner = user?.id === plate?.seller_information?.seller?.id;
-
-  const handleDelete = async () => {
-    await deleteMealPlateApi(plateId);
-    router.push("/dashboard/seller");
-  };
-
-  const subtitle = useMemo(
-    () => plate?.plate_items?.map((item: Meal) => item.meal_name).join(" • "),
-    [plate?.plate_items],
-  );
-
-  if (isLoading) return <LoadingScreen />;
-  if (error || !plate) return <Alert severity="error">Plate not found.</Alert>;
-
-  return (
-    <DashboardContent>
-      <DetailHero
-        imageUrl={plate.plate_img_url}
-        title={plate.plate_name}
-        price={plate.plate_price}
-        chipLabel={`${plate.plate_items.length} meals`}
-        subtitle={subtitle}
-        sellerName={plate.seller_information.seller.name}
-        sellerAvatar={plate.seller_information.seller.avatar_url}
-        isOwner={!!isOwner}
-        onDelete={handleDelete}
-        onEdit={() => router.push(`/dashboard/plate/${plateId}/edit`)}
-      />
-    </DashboardContent>
-  );
-}
 
 // -------------------------------------------------------------
 
@@ -118,7 +24,9 @@ interface DetailHeroProps {
   onEdit: () => void;
 }
 
-function DetailHero({
+// -------------------------------------------------------------
+
+export function DetailHero({
   imageUrl,
   title,
   price,

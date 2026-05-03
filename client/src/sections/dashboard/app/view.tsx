@@ -1,13 +1,17 @@
 "use client";
 
-import { DashboardContent } from "@/components/layout/main";
+import { useGetAllMeals, useGetAllPlates } from "@/actions/meal";
 
-import { useAuth } from "@/auth/hooks/use-auth";
+import { DashboardContent } from "@/components/layout/main";
 
 // -----------------------------------------------------------------------
 
 export function DashboardAppView() {
-  const { user } = useAuth();
+  const { data: meals } = useGetAllMeals();
 
-  return <DashboardContent>Hey: {user?.name}</DashboardContent>;
+  const { data: plates } = useGetAllPlates();
+
+  console.log({ meals, plates });
+
+  return <DashboardContent>Hey: </DashboardContent>;
 }

@@ -75,7 +75,9 @@ export async function deleteMealApi(id: string) {
  ********************************************************* */
 
 export async function createMealPlateApi(
-  data: Pick<MealPlate, "plate_name" | "plate_price" | "plate_img_url"> & { plate_items: string[] },
+  data: Pick<MealPlate, "plate_name" | "plate_price" | "plate_img_url"> & {
+    plate_items: string[];
+  },
 ) {
   const URL = endpoints.general.meal.plate;
 
@@ -178,6 +180,24 @@ export function useGetMostOrderedPlates() {
 
 export function useGetMealCollection() {
   const URL = endpoints.general.meal.collection;
+
+  return useSWR(URL, fetcher);
+}
+
+// -------------------------------------------------------------
+
+/* *********************************************************
+ * public
+ ********************************************************* */
+
+export function useGetAllMeals() {
+  const URL = endpoints.general.meal.allMeals;
+
+  return useSWR(URL, fetcher);
+}
+
+export function useGetAllPlates() {
+  const URL = endpoints.general.meal.allPlates;
 
   return useSWR(URL, fetcher);
 }
