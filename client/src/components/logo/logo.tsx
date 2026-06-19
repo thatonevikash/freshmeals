@@ -14,7 +14,7 @@ export function Logo() {
         fontSize: "1.25rem",
         fontWeight: 600,
         letterSpacing: "-0.01em",
-        color: "success.dark",
+        color: "primary.main",
       }}
     >
       <Box
@@ -23,7 +23,7 @@ export function Logo() {
           width: 8, // w-2
           height: 8,
           borderRadius: "50%",
-          bgcolor: "warning.main", // amber-400 equivalent
+          bgcolor: "secondary.main",
           display: "inline-block",
         }}
       />

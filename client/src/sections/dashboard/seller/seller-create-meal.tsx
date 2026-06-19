@@ -1,4 +1,4 @@
-import { MouseEvent, useState } from "react";
+import { useState, MouseEvent } from "react";
 
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
@@ -17,7 +17,7 @@ import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
 
 import type { Meal } from "@/types/meal.type";
 
-import { createMealApi, createMealPlateApi, useGetMeals } from "@/actions/meal";
+import { useGetMeals, createMealApi, createMealPlateApi } from "@/actions/meal";
 
 // -------------------------------------------------------------
 

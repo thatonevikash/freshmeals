@@ -8,7 +8,7 @@ import Alert from "@mui/material/Alert";
 
 import { Meal } from "@/types/meal.type";
 
-import { deleteMealPlateApi, useGetMealPlate } from "@/actions/meal";
+import { useGetMealPlate, deleteMealPlateApi } from "@/actions/meal";
 
 import { LoadingScreen } from "@/components/loading";
 import { DashboardContent } from "@/components/layout/main";

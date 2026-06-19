@@ -1,12 +1,24 @@
-import { extendTheme } from "@mui/material/styles";
+import { createTheme } from "@mui/material";
 
-import { typography, colorSchemes } from "./core";
+import { palette } from "./core/palette";
+import { components } from "./core/components";
+import { typography } from "./core/typography";
 
-export function createTheme() {
-  return extendTheme({
-    colorSchemeSelector: "data",
-    colorSchemes,
-    typography,
-    shape: { borderRadius: 10 },
-  });
-}
+// ---------------------------------------------------------------
+
+const defaultFont = "var(--font-geist-sans), Arial, sans-serif";
+
+export const theme = createTheme({
+  cssVariables: true,
+
+  palette: { ...palette },
+
+  typography: {
+    fontFamily: defaultFont,
+    ...typography,
+  },
+
+  spacing: "8px",
+
+  components,
+});

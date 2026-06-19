@@ -1,5 +1,5 @@
 import { Main } from "../main";
-import { Header } from "../../layout/header";
+import { Header } from "../header";
 
 // -----------------------------------------------------------------------
 

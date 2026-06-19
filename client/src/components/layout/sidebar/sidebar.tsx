@@ -1,6 +1,6 @@
 "use client";
 
-import { LucideIcon, ChevronRight, LogOut } from "lucide-react";
+import { LogOut, LucideIcon, ChevronRight } from "lucide-react";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -19,6 +19,7 @@ import { useAuthActions } from "@/actions/auth";
 
 import { useAuth } from "@/auth/hooks/use-auth";
 
+import { ThemeToggle } from "../header/theme-toggle";
 import { DashboardNavItem } from "./config-dashboard-nav";
 
 const DRAWER_WIDTH = 280;
@@ -52,10 +53,10 @@ function SidebarNavLink({
           borderRadius: 1.5,
           fontWeight: 600,
           textTransform: "none",
-          color: isActive ? "common.white" : "grey.600",
+          color: isActive ? "common.white" : "text.secondary",
           bgcolor: isActive ? "success.main" : "transparent",
           "& .MuiButton-startIcon": {
-            color: isActive ? "warning.light" : "grey.500",
+            color: isActive ? "secondary.light" : "text.secondary",
           },
           "&:hover": {
             bgcolor: isActive
@@ -86,7 +87,7 @@ function SidebarLogo() {
         />
         <Typography
           variant="subtitle1"
-          sx={{ color: "success.dark", fontWeight: 700, letterSpacing: -0.2 }}
+          sx={{ color: "primary.main", fontWeight: 700, letterSpacing: -0.2 }}
         >
           freshmeals
         </Typography>
@@ -122,7 +123,7 @@ function SidebarUserProfile() {
           borderRadius: 2,
           p: 1.2,
           border: (theme) => `1px solid ${alpha(theme.palette.grey[500], 0.2)}`,
-          bgcolor: "common.white",
+          bgcolor: "background.paper",
           textTransform: "none",
         }}
       >
@@ -142,12 +143,12 @@ function SidebarUserProfile() {
           <Box sx={{ minWidth: 0, textAlign: "left" }}>
             <Typography
               variant="body2"
-              sx={{ color: "grey.800", fontWeight: 600 }}
+              sx={{ color: "text.primary", fontWeight: 600 }}
               noWrap
             >
               {user?.name}
             </Typography>
-            <Typography variant="caption" sx={{ color: "grey.500" }} noWrap>
+            <Typography variant="caption" sx={{ color: "text.secondary" }} noWrap>
               {user?.email}
             </Typography>
           </Box>
@@ -160,7 +161,7 @@ function SidebarUserProfile() {
         startIcon={<LogOut size={14} />}
         sx={{
           justifyContent: "flex-start",
-          color: "grey.500",
+          color: "text.secondary",
           textTransform: "none",
           borderRadius: 1.5,
         }}
@@ -184,14 +185,15 @@ export function Sidebar({ navItems }: { navItems: DashboardNavItem[] }) {
         "& .MuiDrawer-paper": {
           width: DRAWER_WIDTH,
           boxSizing: "border-box",
-          bgcolor: "grey.50",
+          bgcolor: "background.paper",
           borderRight: (theme) =>
             `1px solid ${alpha(theme.palette.grey[500], 0.12)}`,
         },
       }}
     >
-      <Box sx={{ px: 2, height: 64, display: "flex", alignItems: "center" }}>
+      <Box sx={{ px: 2, height: 64, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <SidebarLogo />
+        <ThemeToggle />
       </Box>
 
       <Divider />

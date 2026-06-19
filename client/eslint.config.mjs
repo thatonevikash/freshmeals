@@ -1,11 +1,13 @@
 import perfectionist from "eslint-plugin-perfectionist";
 import unusedImports from "eslint-plugin-unused-imports";
-import nextTypescript from "eslint-config-next/typescript";
+import nextTypeScript from "eslint-config-next/typescript";
+import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 
-const config = [
+const eslintConfig = defineConfig([
   ...nextVitals,
-  ...nextTypescript,
+  ...nextTypeScript,
+  globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts"]),
   {
     plugins: {
       perfectionist,
@@ -24,15 +26,26 @@ const config = [
           varsIgnorePattern: "^_",
         },
       ],
+      "perfectionist/sort-exports": [1, { order: "asc", type: "line-length" }],
+      "perfectionist/sort-named-imports": [
+        1,
+        { order: "asc", type: "line-length" },
+      ],
+      "perfectionist/sort-named-exports": [
+        1,
+        { order: "asc", type: "line-length" },
+      ],
       "perfectionist/sort-imports": [
-        "error",
+        "warn",
         {
           order: "asc",
           ignoreCase: true,
           type: "line-length",
           specialCharacters: "keep",
           internalPattern: ["^@/.*"],
+          newlinesBetween: "always",
           groups: [
+            "style",
             "react",
             "next",
             "mui",
@@ -68,11 +81,10 @@ const config = [
               "internal-theme": ["^@/theme/.*"],
             },
           },
-          newlinesBetween: "always",
         },
       ],
     },
   },
-];
+]);
 
-export default config;
+export default eslintConfig;

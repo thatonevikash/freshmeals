@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 
 import { useRouter } from "next/navigation";
 
 import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
 
-import { updateMealApi, useGetMeal } from "@/actions/meal";
+import { useGetMeal, updateMealApi } from "@/actions/meal";
 
 import { LoadingScreen } from "@/components/loading";
 import { DashboardContent } from "@/components/layout/main";

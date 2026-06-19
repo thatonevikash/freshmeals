@@ -1,14 +1,20 @@
+import { Leaf, Clock3, ShieldCheck } from "lucide-react";
+
 import Box from "@mui/material/Box";
-import Link from "@mui/material/Link";
+import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { alpha } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 
+import { RouterLink } from "@/lib/router-link";
+
 import { useAuth } from "@/auth/hooks/use-auth";
 
-import { RouterLink } from "@/routes";
-
-// -----------------------------------------------------------------------
+const trustItems = [
+  { label: "Fresh daily", icon: Leaf },
+  { label: "On-time delivery", icon: Clock3 },
+  { label: "Quality assured", icon: ShieldCheck },
+];
 
 export function HomeHero() {
   const { user } = useAuth();
@@ -18,14 +24,14 @@ export function HomeHero() {
       component="section"
       sx={{
         position: "relative",
-        minHeight: "calc(100vh - 72px)",
+        minHeight: "calc(90vh - 72px)",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         overflow: "hidden",
+        px: 2,
       }}
     >
-      {/* Background decoration */}
       <Box sx={{ position: "absolute", inset: 0, zIndex: -10 }}>
         <Box
           sx={(theme) => ({
@@ -35,7 +41,7 @@ export function HomeHero() {
             width: 500,
             height: 500,
             borderRadius: "100%",
-            bgcolor: alpha(theme.palette.success.main, 0.24),
+            bgcolor: alpha(theme.palette.primary.main, 0.2),
             filter: "blur(64px)",
           })}
         />
@@ -47,7 +53,7 @@ export function HomeHero() {
             width: 500,
             height: 500,
             borderRadius: "100%",
-            bgcolor: alpha(theme.palette.warning.main, 0.24),
+            bgcolor: alpha(theme.palette.secondary.main, 0.2),
             filter: "blur(64px)",
           })}
         />
@@ -55,201 +61,123 @@ export function HomeHero() {
 
       <Box
         sx={{
-          maxWidth: "56rem",
+          maxWidth: "58rem",
           mx: "auto",
           textAlign: "center",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: "1.5rem",
+          gap: 2.5,
         }}
       >
-        {/* Badge */}
         <Box
           component="span"
           sx={(theme) => ({
             display: "inline-flex",
             alignItems: "center",
             gap: 1,
-            bgcolor: alpha(theme.palette.success.light, 0.12),
-            border: `1px solid ${alpha(theme.palette.success.main, 0.08)}`,
-            color: "success.dark",
+            bgcolor: alpha(theme.palette.primary.light, 0.15),
+            border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
+            color: "primary.dark",
             fontSize: 12,
-            fontWeight: 500,
-            px: 1.25,
-            py: 0.75,
+            fontWeight: 600,
+            px: 1.5,
+            py: 0.8,
             borderRadius: 4,
           })}
         >
-          <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-          Fresh meals, delivered daily
+          Curated premium meals • Delivered daily
         </Box>
 
-        {/* Heading */}
         <Typography
-          component="h1"
+          variant="h1"
           sx={{
-            fontWeight: 700,
-            letterSpacing: "-0.02em",
-            lineHeight: 1.08,
-            color: "grey.900",
-            fontSize: {
-              xs: "2.5rem", // ~text-4xl
-              md: "4.5rem", // ~text-7xl
-            },
+            fontWeight: 900,
+            letterSpacing: "-0.0125em",
+            lineHeight: 1.1,
+            color: "text.primary",
+            fontSize: { xs: "2.3rem", md: "5.2rem" },
           }}
         >
-          Fresh. Healthy.{" "}
-          <Box
-            component="span"
-            sx={{
-              color: "success.dark",
-              fontStyle: "italic",
-              fontWeight: 300,
-            }}
-          >
-            Affordable.
-          </Box>
-          <br />
-          <Box
-            component="span"
-            sx={{
-              color: "grey.500",
-              fontWeight: 300,
-              fontSize: {
-                xs: "2rem", // ~text-4xl
-                md: "3.75rem", // ~text-6xl
-              },
-            }}
-          >
-            Meals at your doorstep.
+          Treat yourself with
+          <Box component="span" sx={{ color: "success.main", ml: 2 }}>
+            Freshmeals
           </Box>
         </Typography>
 
-        {/* Subtext */}
-        <Typography
-          sx={{
-            color: "grey.500",
-            fontSize: "1.125rem", // ~text-lg
-            fontWeight: 300,
-            maxWidth: "36rem", // ~max-w-xl
-            lineHeight: 1.625, // ~leading-relaxed
-          }}
-        >
-          freshmeals provides healthy meals at your doorstep at an affordable
-          price.{" "}
-          <Link
-            component={RouterLink}
-            href="/login"
+        <Typography variant="h2">
+          <Box
+            component="span"
             sx={{
-              color: "success.dark",
-              textDecoration: "underline",
-              textUnderlineOffset: "4px",
-              transition: "color 0.2s ease",
-              "&:hover": {
-                color: "success.main",
-              },
+              color: "text.secondary",
+              fontWeight: 400,
+              fontSize: { xs: "1.5rem", md: "2.3rem" },
             }}
           >
-            Order now →
-          </Link>
+            thoughtfully prepared for modern routines.
+          </Box>
         </Typography>
 
-        {/* Buttons */}
-        <Box sx={{ display: "flex", alignItems: "center", gap: 2, mt: 2 }}>
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          spacing={1.5}
+          sx={{ mt: 1 }}
+        >
           <Button
+            size="large"
             component={RouterLink}
             href={user ? "/dashboard" : "/login"}
             variant="outlined"
-            sx={{
-              borderRadius: "999px",
-              px: 3.5,
-              py: 1.5,
-              fontSize: "0.875rem",
-              fontWeight: 500,
-              borderColor: "grey.300",
-              color: "text.primary",
-              "&:hover": {
-                borderColor: "grey.400",
-                bgcolor: "common.white",
-              },
-            }}
           >
-            {user ? "Get in" : "Log in"}
+            {user ? "Go to dashboard" : "Log in"}
           </Button>
-
           <Button
+            size="large"
             component={RouterLink}
             href="/sign-up"
             variant="contained"
-            sx={{
-              borderRadius: "999px",
-              px: 3.5,
-              py: 1.5,
-              fontSize: "0.875rem",
-              fontWeight: 500,
-              bgcolor: "success.dark",
-              boxShadow: "none",
-              "&:hover": {
-                bgcolor: "success.main",
-                boxShadow: "none",
-              },
-            }}
           >
-            Sign up free →
+            Order now
           </Button>
-        </Box>
+        </Stack>
 
-        {/* Social proof */}
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            gap: 2,
-            mt: 4,
-            fontSize: "0.875rem", // text-sm
-            color: "grey.400",
-          }}
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          spacing={1.5}
+          sx={{ mt: 2 }}
         >
-          {/* Avatar group */}
-          <Box
-            sx={{ display: "flex", "& > *:not(:first-of-type)": { ml: -1 } }}
-          >
-            {["AN", "MK", "RS"].map((initials) => (
+          {trustItems.map((item) => {
+            const Icon = item.icon;
+            return (
               <Box
-                key={initials}
+                key={item.label}
                 sx={{
-                  width: 28, // w-7
-                  height: 28,
-                  borderRadius: "50%",
-                  bgcolor: "success.light",
-                  border: "2px solid",
-                  borderColor: "common.white",
-                  display: "flex",
+                  display: "inline-flex",
                   alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: "10px",
-                  fontWeight: 500,
-                  color: "success.dark",
+                  gap: 1,
+                  px: 1.5,
+                  py: 1,
+                  borderRadius: 999,
+                  bgcolor: "background.paper",
+                  border: "1px solid",
+                  borderColor: "divider",
                 }}
               >
-                {initials}
+                <Icon size={16} />
+                <Typography
+                  variant="caption"
+                  sx={{
+                    fontSize: 12,
+                    color: "text.secondary",
+                    fontWeight: 600,
+                  }}
+                >
+                  {item.label}
+                </Typography>
               </Box>
-            ))}
-          </Box>
-
-          {/* Text */}
-          <Typography
-            component="span"
-            sx={{ fontSize: "inherit", color: "inherit" }}
-          >
-            Trusted by{" "}
-            <Box component="span" sx={{ color: "grey.600", fontWeight: 500 }}>
-              10,000+
-            </Box>{" "}
-            customers
-          </Typography>
-        </Box>
+            );
+          })}
+        </Stack>
       </Box>
     </Box>
   );

@@ -8,7 +8,7 @@ import { dashboardNavItems } from "../sidebar/config-dashboard-nav";
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
-    <Box sx={{ display: "flex", minHeight: "100vh", bgcolor: "grey.100" }}>
+    <Box sx={{ display: "flex", minHeight: "100vh", bgcolor: "background.default" }}>
       <Sidebar navItems={dashboardNavItems} />
 
       <Box

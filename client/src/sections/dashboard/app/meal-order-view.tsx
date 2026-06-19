@@ -76,7 +76,9 @@ export function MealOrderView({ mealId }: { mealId: string }) {
             </CardMedia>
 
             <Typography variant="h6">{meal.meal_name}</Typography>
-            <Typography color="text.secondary">Seller: {meal.seller_information.seller.name}</Typography>
+            <Typography color="text.secondary">
+              Seller: {meal.seller_information.seller.name}
+            </Typography>
           </Stack>
         </Card>
 
@@ -100,15 +102,21 @@ export function MealOrderView({ mealId }: { mealId: string }) {
               label="Quantity"
               type="number"
               value={quantity}
-              onChange={(e) => setQuantity(Math.max(1, Number(e.target.value) || 1))}
-              inputProps={{ min: 1 }}
+              onChange={(e) =>
+                setQuantity(Math.max(1, Number(e.target.value) || 1))
+              }
+              slotProps={{ htmlInput: { min: 1 } }}
               fullWidth
             />
 
             {submitError && <Alert severity="error">{submitError}</Alert>}
 
             <Box>
-              <Button variant="contained" onClick={onSubmit} disabled={isSubmitting}>
+              <Button
+                variant="contained"
+                onClick={onSubmit}
+                disabled={isSubmitting}
+              >
                 {isSubmitting ? "Placing order..." : "Place order"}
               </Button>
             </Box>
