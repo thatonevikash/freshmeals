@@ -1,4 +1,4 @@
-import { Sparkles, Truck, UtensilsCrossed } from "lucide-react";
+import { Truck, Sparkles, UtensilsCrossed } from "lucide-react";
 
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";

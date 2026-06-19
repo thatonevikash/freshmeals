@@ -1,10 +1,10 @@
 "use client";
 
 import {
-  type LucideIcon,
   Tag,
-  LayoutDashboard,
   ShoppingCart,
+  type LucideIcon,
+  LayoutDashboard,
 } from "lucide-react";
 
 // -------------------------------------------------------------

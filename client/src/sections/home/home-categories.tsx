@@ -1,4 +1,4 @@
-import { Flame, Leaf, Salad, Users } from "lucide-react";
+import { Leaf, Flame, Salad, Users } from "lucide-react";
 
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";

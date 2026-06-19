@@ -1,9 +1,8 @@
 "use client";
 
+import MuiInitColorSchemeScript from "@mui/material/InitColorSchemeScript";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v16-appRouter";
 import { CssBaseline, ThemeProvider as MuiThemeProvider } from "@mui/material";
-
-import MuiInitColorSchemeScript from "@mui/material/InitColorSchemeScript";
 
 import { theme } from "./create-theme";
 

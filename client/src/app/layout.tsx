@@ -2,8 +2,9 @@ import "./globals.css";
 
 import { Geist, Geist_Mono } from "next/font/google";
 
-import { InitColorSchemeScript, ThemeProvider } from "@/theme/theme-provider";
 import { AuthProvider } from "@/auth/context/auth-provider";
+
+import { ThemeProvider, InitColorSchemeScript } from "@/theme/theme-provider";
 
 // ---------------------------------------------------------------
 

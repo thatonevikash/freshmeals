@@ -1,22 +1,22 @@
 "use client";
 
 import { useState } from "react";
-
-import { BadgeCheck, Sparkles, Timer } from "lucide-react";
+import { Timer, Sparkles, BadgeCheck } from "lucide-react";
 
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import Alert from "@mui/material/Alert";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
+import { alpha } from "@mui/material/styles";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { alpha } from "@mui/material/styles";
 import CircularProgress from "@mui/material/CircularProgress";
 
-import { useAuthActions } from "@/actions/auth";
 import { RouterLink } from "@/lib/router-link";
+
+import { useAuthActions } from "@/actions/auth";
 
 interface SignUpCredentials {
   username: string;

@@ -1,6 +1,6 @@
 "use client";
 
-import { LucideIcon, ChevronRight, LogOut } from "lucide-react";
+import { LogOut, LucideIcon, ChevronRight } from "lucide-react";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";

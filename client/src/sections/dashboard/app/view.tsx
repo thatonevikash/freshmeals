@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Clock3, Star, Store } from "lucide-react";
+import { Star, Store, Clock3, ArrowRight } from "lucide-react";
 
 import Link from "next/link";
 import Image from "next/image";

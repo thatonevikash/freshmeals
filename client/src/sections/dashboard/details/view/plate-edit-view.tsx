@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 
 import { useRouter } from "next/navigation";
 
@@ -15,11 +15,11 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import { Meal } from "@/types/meal.type";
 
 import {
-  addMealToPlateApi,
-  removeMealFromPlateApi,
-  updateMealPlateApi,
-  useGetMealPlate,
   useGetMeals,
+  useGetMealPlate,
+  addMealToPlateApi,
+  updateMealPlateApi,
+  removeMealFromPlateApi,
 } from "@/actions/meal";
 
 import { LoadingScreen } from "@/components/loading";

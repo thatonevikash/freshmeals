@@ -1,15 +1,14 @@
-import { Clock3, Leaf, ShieldCheck } from "lucide-react";
+import { Leaf, Clock3, ShieldCheck } from "lucide-react";
 
 import Box from "@mui/material/Box";
-import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { alpha } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 
-import { useAuth } from "@/auth/hooks/use-auth";
-
 import { RouterLink } from "@/lib/router-link";
+
+import { useAuth } from "@/auth/hooks/use-auth";
 
 const trustItems = [
   { label: "Fresh daily", icon: Leaf },

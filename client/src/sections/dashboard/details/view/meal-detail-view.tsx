@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 
 import Alert from "@mui/material/Alert";
 
-import { deleteMealApi, useGetMeal } from "@/actions/meal";
+import { useGetMeal, deleteMealApi } from "@/actions/meal";
 
 import { LoadingScreen } from "@/components/loading";
 import { DashboardContent } from "@/components/layout/main";

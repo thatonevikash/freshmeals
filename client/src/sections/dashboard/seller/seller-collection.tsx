@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Divider, Paper, Tab, Tabs } from "@mui/material";
+import { Tab, Tabs, Paper, Divider } from "@mui/material";
 
 import { Meal, MealPlate } from "@/types/meal.type";
 

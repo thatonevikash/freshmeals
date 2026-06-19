@@ -1,6 +1,6 @@
 import useSWR, { mutate } from "swr";
 
-import axios, { endpoints, fetcher } from "@/lib/axios";
+import axios, { fetcher, endpoints } from "@/lib/axios";
 
 // -------------------------------------------------------------
 
